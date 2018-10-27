@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+
+	<bean class="com.acc.controller.LoginController" scope="session">
+		<property name="loginDelegate" ref="loginDelegate"></property>
+		<property name="detailedDelegate" ref="detailedDelegate"></property>
+	</bean>
+	<bean id="loginDelegate" class="com.acc.delegate.impl.LoginDelegateImpl"></bean>
+	
+	<bean class="com.acc.controller.NotesHistoryController" scope="session">
+		<property name="notesHistoryDelegate" ref="notesHistoryDelegate"></property>
+
+	</bean>
+	<bean id="notesHistoryDelegate" class="com.acc.delegate.impl.NotesHistoryDelegateImpl"></bean>
+	
+	
+	<bean class="com.acc.controller.TriageActionsController" scope="session">
+		<property name="triageActionsDelegate" ref="triageActionsDelegate"></property>
+
+	</bean>
+	<bean id="triageActionsDelegate" class="com.acc.delegate.impl.TriageActionsDelegateImpl"></bean>
+	
+	<bean id="detailedDelegate" class="com.acc.delegate.impl.DetailedDelegateImpl"></bean>
+	
+	
+	<bean class="com.acc.controller.NotificationController" scope="session">
+		<property name="notificationDelegate" ref="notificationDelegate"></property>
+
+	</bean>
+	<bean id="notificationDelegate" class="com.acc.delegate.impl.NotificationDelegateImpl"></bean>
+	
+	
+	<bean class="com.acc.controller.DetailedController" scope="session">
+		
+		<property name="detailedDelegate" ref="detailedDelegate"></property>
+	</bean>
+	
+	<bean class="com.acc.controller.AdminViewController" scope="session">
+		
+		<property name="adminViewDelegate" ref="adminViewDelegate"></property>
+	</bean>
+	
+</beans>
