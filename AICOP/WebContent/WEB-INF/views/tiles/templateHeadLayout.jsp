@@ -28,7 +28,7 @@
 	type="text/css" />
 <link href="resources/css/package/marquee.css" rel="stylesheet"
 	type="text/css" />
-<link href="resources/css/custom/aicop-custom.css" rel="stylesheet"
+<link href="resources/css/custom/restaurant-custom.css" rel="stylesheet"
 	type="text/css" />
  	
 <link href="resources/css/package/jquery.dataTables.min.css" rel="stylesheet"

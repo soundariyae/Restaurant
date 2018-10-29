@@ -31,7 +31,7 @@
           <div class="tab-content">
             <div class="tab-pane active show" id="tablesViewTab">
             
-             <button type="submit" style="width: 5em; height: 5em; background-color: #000000; color: #FFFFFF; border-radius: 0%;">
+             <!-- <button type="submit" style="width: 5em; height: 5em; background-color: #000000; color: #FFFFFF; border-radius: 0%;">
           <span style="font-size: 9px;">Table 1</span>
           <span class="fa fa-users"></span>
         </button>
@@ -39,7 +39,7 @@
         <button type="submit" style="width: 5em; height: 5em; background-color: #000000; color: #FFFFFF; border-radius: 0%;">
           <span style="font-size: 9px;">Table 2</span>
           <span class="fa fa-users"></span>
-        </button>
+        </button> -->
               
             </div>
             <div class="tab-pane" id="messages">

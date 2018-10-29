@@ -1,0 +1,10 @@
+.table-available{
+	background : green;
+	color: #FFFFFF; 
+	border-radius: 0%;
+}
+.table-occupied{
+	background : grey;
+	color: #FFFFFF;
+	border-radius: 0%;
+}

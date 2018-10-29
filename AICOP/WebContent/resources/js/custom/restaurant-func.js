@@ -55,8 +55,27 @@ $.ajax({
 	
 	//data : JSON.stringify(notesVal),
 		success : function(data){
-			console.log("Success--> Length")
+			console.log("Success--> Length");
 			console.log(data.length);
+			var domString ="";
+			$.each(data,function(key,value){
+				var tableHeight =value.capacity+"em";
+				console.log("occupancy status-->"+value.occupancyStatus);
+				if(value.occupancyStatus.trim()=="A"){
+					console.log("if");
+			domString += "<button title=\"Available seats : "+value.availableSeat+"\" class=\"table-available\" type=\"submit\" style=\"width: 5em; height: "+tableHeight+";\">" +
+					"<span style=\"font-size: 9px;\">"+value.tableName+"</span><span class=\"fa fa-users\"></span></button><br>";
+				}
+				
+				else{
+					console.log("else");
+					domString += "<button title=\"Available seats : "+value.availableSeat+"\" class=\"table-occupied\" type=\"submit\" style=\"width: 5em; height: "+tableHeight+";\">" +
+					"<span style=\"font-size: 9px;\">"+value.tableName+"</span><span class=\"fa fa-users\"></span></button><br>";
+					
+				}
+			});
+			
+			$('#tablesViewTab').html(domString);
 			
 		},
 		error : function(){
