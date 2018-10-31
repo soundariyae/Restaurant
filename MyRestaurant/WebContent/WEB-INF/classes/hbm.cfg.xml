@@ -10,9 +10,9 @@
 		<property name="hbm2ddl.auto">update</property>
 		<property name="show_sql">true</property>
 		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
-		<property name="connection.url">jdbc:mysql://13.58.76.163:3306/pos</property>
+		<property name="connection.url">jdbc:mysql://13.58.76.163:3306/pos_main</property>
 		<!-- <property name="connection.url">jdbc:mysql://10.185.0.113:3306/aicop</property> -->
-		<!-- <property name="connection.username">aicop_app</property> -->
+		<!-- <property name="connection.username">aicop_app</property> pos_main-->
 		<property name="connection.username">root</property>
 		<!-- <property name="connection.password">Pass@123</property> -->
 		<property name="connection.password">D0tworld</property>

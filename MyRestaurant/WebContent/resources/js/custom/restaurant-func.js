@@ -124,7 +124,7 @@ if(window.location.href.indexOf("settingsView") > -1)
      $("#settingsViewNav").addClass("active");
 }
 
-loadTableStatus();
+//loadTableStatus();
 function loadTableStatus(){
 
 	$.ajax({
@@ -161,5 +161,8 @@ function loadTableStatus(){
 		
 	});
 	}
+
+
+
 
 });

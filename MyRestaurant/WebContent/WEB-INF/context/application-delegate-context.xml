@@ -10,7 +10,8 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
 
 	<bean id="loginDelegate" class="com.acc.delegate.impl.LoginDelegateImpl">
-		<property name="loginService" ref="loginService"></property>	
+		<property name="loginService" ref="loginService"></property>
+		<property name="tableDetailsService" ref="tableDetailsService"></property>	
 	</bean>
 	<bean id="loginService" class="com.acc.service.impl.LoginServiceImpl">
 	</bean>

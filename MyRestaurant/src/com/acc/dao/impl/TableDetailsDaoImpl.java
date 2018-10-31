@@ -14,6 +14,7 @@ import org.hibernate.type.StandardBasicTypes;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.acc.bean.OrderMgmtBean;
 import com.acc.bean.TablesBean;
 import com.acc.dao.TableDetailsDao;
 
@@ -67,10 +68,87 @@ public class TableDetailsDaoImpl implements TableDetailsDao{
 					.setResultTransformer(new AliasToBeanResultTransformer(TablesBean.class));
 					
 			List<TablesBean> resultList = qr.list();
+			session.close();
 			logger.debug("size of the record --> "+resultList.size());
 			
 			return resultList;
 		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrderMgmtBean> getCategory() {
+		try {
+	        Configuration configuration = new Configuration();
+	    configuration.configure("hbm.cfg.xml");
+	    ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();   
+	     sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+	    }
+	catch (Throwable ex) {
+	    throw new ExceptionInInitializerError(ex);
+	}
+		StringBuilder queryBuffer = new StringBuilder();
+			queryBuffer.append("SELECT category_id as \"categoryId\",");
+			queryBuffer.append(" category_name as \"categoryName\",");
+			queryBuffer.append(" category_desc as \"categoryDesc\"");
+			queryBuffer.append(" FROM category");
+			
+			System.out.println(queryBuffer.toString());
+			Session session = sessionFactory.openSession();
+			Query qr = session.createSQLQuery(queryBuffer.toString())
+					.addScalar("categoryId",StandardBasicTypes.INTEGER)
+					.addScalar("categoryName",StandardBasicTypes.STRING)
+					.addScalar("categoryDesc",StandardBasicTypes.STRING)
+					.setResultTransformer(new AliasToBeanResultTransformer(OrderMgmtBean.class));
+					
+			List<OrderMgmtBean> resultList = qr.list();
+			logger.debug("size of the record --> "+resultList.size());
+			session.close();
+			return resultList;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrderMgmtBean> getItems() {
+		try {
+	        Configuration configuration = new Configuration();
+	    configuration.configure("hbm.cfg.xml");
+	    ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();   
+	     sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+	    }
+	catch (Throwable ex) {
+	    throw new ExceptionInInitializerError(ex);
+	}
+		StringBuilder queryBuffer = new StringBuilder();
+			queryBuffer.append("SELECT item_id as \"itemId\",");
+			queryBuffer.append(" name as \"itemName\",");
+			queryBuffer.append(" type as \"itemType\",");
+			queryBuffer.append(" category_id as \"categoryId\",");
+			queryBuffer.append(" description as \"itemDescription\",");
+			queryBuffer.append(" price as \"itemPrice\",");
+			queryBuffer.append(" available_quantity as \"availableQuantity\",");
+			queryBuffer.append(" tax as \"itemTax\",");
+			queryBuffer.append(" status as \"itemStatus\"");
+			queryBuffer.append(" FROM item");
+			
+			System.out.println(queryBuffer.toString());
+			Session session = sessionFactory.openSession();
+			Query qr = session.createSQLQuery(queryBuffer.toString())
+					.addScalar("itemId",StandardBasicTypes.INTEGER)
+					.addScalar("itemName",StandardBasicTypes.STRING)
+					.addScalar("itemType",StandardBasicTypes.STRING)
+					.addScalar("categoryId",StandardBasicTypes.INTEGER)
+					.addScalar("itemDescription",StandardBasicTypes.STRING)
+					.addScalar("itemPrice",StandardBasicTypes.INTEGER)
+					.addScalar("availableQuantity",StandardBasicTypes.INTEGER)
+					.addScalar("itemTax",StandardBasicTypes.INTEGER)
+					.addScalar("itemStatus",StandardBasicTypes.INTEGER)
+					.setResultTransformer(new AliasToBeanResultTransformer(OrderMgmtBean.class));
+					
+			List<OrderMgmtBean> resultList = qr.list();
+			logger.debug("size of the record --> "+resultList.size());
+			session.close();
+			return resultList;
 	}
 
 }

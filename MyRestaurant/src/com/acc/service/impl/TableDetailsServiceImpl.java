@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.acc.bean.OrderMgmtBean;
 import com.acc.bean.TablesBean;
 
 import com.acc.dao.TableDetailsDao;
@@ -33,6 +34,18 @@ public class TableDetailsServiceImpl implements TableDetailsService{
 	public List<TablesBean> getTableDetails() {
 		logger.debug("Get table details service");
 		return tableDetailsDao.getTableDetails();
+	}
+
+	@Override
+	public List<OrderMgmtBean> getCategory() {
+		
+		return tableDetailsDao.getCategory();
+	}
+
+	@Override
+	public List<OrderMgmtBean> getItems() {
+		
+		return tableDetailsDao.getItems();
 	}
 	
 	

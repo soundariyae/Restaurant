@@ -2,6 +2,8 @@ package com.acc.controller;
 
 
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import org.springframework.web.servlet.ModelAndView;
 
-
+import com.acc.bean.OrderMgmtBean;
 import com.acc.bean.UserBean;
 
 import com.acc.delegate.LoginDelegate;
@@ -96,6 +98,10 @@ public ModelAndView registerUser(@ModelAttribute("loginForm")LoginForm loginForm
 	public ModelAndView orderView(HttpServletRequest request,HttpServletResponse response) {
 		logger.debug("Load order View");
 		ModelAndView mav = new ModelAndView();
+		List<OrderMgmtBean> categoryList = loginDelegate.getCategory();
+		List<OrderMgmtBean> itemList = loginDelegate.getItems();
+		mav.addObject("categoryList", categoryList);
+		mav.addObject("itemList", itemList);
 		mav.setViewName("common/orderView.jsp");
 		
 		return mav;
