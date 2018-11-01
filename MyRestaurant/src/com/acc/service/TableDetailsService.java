@@ -9,6 +9,8 @@ public interface TableDetailsService {
 	List<TablesBean> getTableDetails();
 	List<OrderMgmtBean> getCategory();
 	public List<OrderMgmtBean> getItems();
+	boolean saveCategoryDetails(OrderMgmtBean orderMgmtBean);
+	boolean saveItemDetails(OrderMgmtBean orderMgmtBean);
 	
 
 }

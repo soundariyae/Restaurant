@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
@@ -54,7 +55,7 @@ public class TableDetailsDaoImpl implements TableDetailsDao{
 			queryBuffer.append(" table_name as \"tableName\",");
 			queryBuffer.append(" capacity as \"capacity\",");
 			queryBuffer.append(" available_seat as \"availableSeat\",");
-			queryBuffer.append(" occupancy_status as \"occupancyStatus\"");
+			queryBuffer.append(" occupied_status as \"occupancyStatus\"");
 			queryBuffer.append(" FROM table_details");
 			
 			System.out.println(queryBuffer.toString());
@@ -149,6 +150,95 @@ public class TableDetailsDaoImpl implements TableDetailsDao{
 			logger.debug("size of the record --> "+resultList.size());
 			session.close();
 			return resultList;
+	}
+
+	@Override
+	public boolean saveCategoryDetails(OrderMgmtBean orderMgmtBean) {
+try {
+	        
+	        Configuration configuration = new Configuration();
+		    configuration.configure("hbm.cfg.xml");
+		    ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();   
+		    sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+		       
+		}
+		catch (Throwable ex) {
+		    throw new ExceptionInInitializerError(ex);
+		}
+			
+	    
+	    	StringBuilder queryBuffer = new StringBuilder();
+	    	
+	    	queryBuffer.append("insert into category(category_name,category_desc)");
+	    	queryBuffer.append(" values(:categoryName,:categoryDesc)");
+	    	Session session = sessionFactory.openSession();
+			
+	    	
+	    	
+
+	    	Transaction tx = session.beginTransaction();
+	    	
+			Query qr = session.createSQLQuery(queryBuffer.toString())
+					
+					
+					.setParameter("categoryName", orderMgmtBean.getCategoryName())
+					.setParameter("categoryDesc", orderMgmtBean.getCategoryDesc());
+					
+			
+			int rowInserted = qr.executeUpdate();
+			tx.commit();
+			session.close();
+	    	if(rowInserted>0) {
+	    		return true;
+	    	}
+		return false;
+	}
+
+	@Override
+	public boolean saveItemDetails(OrderMgmtBean orderMgmtBean) {
+try {
+	        
+	        Configuration configuration = new Configuration();
+		    configuration.configure("hbm.cfg.xml");
+		    ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();   
+		    sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+		       
+		}
+		catch (Throwable ex) {
+		    throw new ExceptionInInitializerError(ex);
+		}
+			
+	    
+	    	StringBuilder queryBuffer = new StringBuilder();
+	    	
+	    	queryBuffer.append("insert into item(name,type,description,price,available_quantity,tax,status,category_id)");
+	    	queryBuffer.append(" values(:itemName,:itemType,:description,:price,:availableQuan,:tax,:status,:categoryId)");
+	    	Session session = sessionFactory.openSession();
+			
+	    	
+	    	
+
+	    	Transaction tx = session.beginTransaction();
+	    	
+			Query qr = session.createSQLQuery(queryBuffer.toString())
+					.setParameter("itemName", orderMgmtBean.getItemName())
+					.setParameter("itemType", orderMgmtBean.getItemType())
+					.setParameter("description", orderMgmtBean.getItemDescription())
+					.setParameter("price", orderMgmtBean.getItemPrice())
+					.setParameter("availableQuan", orderMgmtBean.getAvailableQuantity())
+					.setParameter("tax", orderMgmtBean.getItemTax())
+					
+					.setParameter("status", orderMgmtBean.getItemStatus())
+					.setParameter("categoryId", orderMgmtBean.getCategoryId());
+					
+			
+			int rowInserted = qr.executeUpdate();
+			tx.commit();
+			session.close();
+	    	if(rowInserted>0) {
+	    		return true;
+	    	}
+		return false;
 	}
 
 }

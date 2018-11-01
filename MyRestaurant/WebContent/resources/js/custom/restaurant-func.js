@@ -161,8 +161,69 @@ function loadTableStatus(){
 		
 	});
 	}
+$('#addCategory').on('click',function(){
+	$('#categoryTableDiv').hide();
+	$('#addCategoryDiv').show();
+	
+})
+$('#saveNewCategory').on('click',function(){
+	$('#addCategoryDiv').hide();
+	$('#loadingDiv').show();
+	OrderMgmtBean = new Object();
+	
+	OrderMgmtBean.categoryName = $('#newCategoryName').val();
+	OrderMgmtBean.categoryDesc = $('#newCategoryDesc').val();
+	$.ajax({
+		url : "/MyRestaurant/saveNewCategoryDetails.do",
+		contentType : "application/json",
+		type : "POST",
+		data : JSON.stringify(OrderMgmtBean),
+		success : function(data){
+			console.log("save success");
+			
+			
+			location.reload(); 
 
+		}
+	
+	
+	})
+})
 
+$('#saveNewItem').on('click',function(){
+	$('#addItemDiv').hide();
+	$('#loadingItemDiv').show();
+	OrderMgmtBean = new Object();
+	
+	OrderMgmtBean.itemName = $('#newItemName').val();
+	OrderMgmtBean.itemType = $('#newItemType').val();
+	OrderMgmtBean.itemDescription = $('#newItemDesc').val();
+	OrderMgmtBean.itemPrice = $('#newItemPrice').val();
+	OrderMgmtBean.availableQuantity = $('#newItemAvailableQuan').val();
+	OrderMgmtBean.itemTax = $('#newItemTax').val();
+	OrderMgmtBean.itemStatus = $('#newItemStatus').val();
+	OrderMgmtBean.categoryId = $('#newItemCategoryId').val();
+	$.ajax({
+		url : "/MyRestaurant/saveNewItemDetails.do",
+		contentType : "application/json",
+		type : "POST",
+		data : JSON.stringify(OrderMgmtBean),
+		success : function(data){
+			console.log("save success");
+			
+			
+			location.reload(); 
 
+		}
+	
+	
+	})
+})
+
+$('#addNewItem').on('click',function(){
+	$('#itemTableDiv').hide();
+	$('#addItemDiv').show();
+	
+})
 
 });

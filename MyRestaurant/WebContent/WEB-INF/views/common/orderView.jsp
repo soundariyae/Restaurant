@@ -27,7 +27,7 @@
           <div class="tab-content">
             <div class="tab-pane active show" id="categoryTab">
             <div class="row">
-            <button class="btn btn-info btn-round">
+            <button id="addCategory" class="btn btn-info btn-round">
               <i class="material-icons">add_circle_outline</i> Add
             <div class="ripple-container"></div></button>
             <button class="btn btn-info btn-round">
@@ -39,7 +39,7 @@
             <div class="ripple-container"></div></button>
             
             </div>
-             <div class="row">
+             <div class="row" id="categoryTableDiv">
             	<div class="table-responsive">
 		                  <table id="categoryTable" class="table table-striped">
 				              <thead>
@@ -67,11 +67,40 @@
 		                  
 		                  </div>
 		                  </div>
+		                  
+		               <div id="addCategoryDiv" style="display:none">
+		               		
+	            			<div class="row">
+					              <label class="col-sm-3 col-form-label">Category Name</label>
+					              <div class="col-sm-7">
+					                <div class="form-group bmd-form-group">
+					                  <input class="form-control" type="text" id="newCategoryName" required="true" aria-required="true">
+					                </div>
+					              </div>
+					              
+	            			</div>
+	            			<div class="row">
+					              <label class="col-sm-3 col-form-label">Category Description</label>
+					              <div class="col-sm-7">
+					                <div class="form-group bmd-form-group">
+					                  <input class="form-control" type="text" id="newCategoryDesc" required="true" aria-required="true">
+					                </div>
+					              </div>
+					              
+	            			</div>
+	            			<div class="row">
+	            				<button id="saveNewCategory" type="button" class="btn btn-rose">Save</button>
+	            			</div>
+		               </div>   
+		                 <div id="loadingDiv" style="display:none">
+		                 <label class="col-sm-3 col-form-label"> Saving...Please wait..</label>
+		                 
+		                  </div>
 		                  </div>
 		                  
 		    <div class="tab-pane" id="itemsTab">
 		    <div class="row">
-            <button class="btn btn-info btn-round">
+            <button id="addNewItem" class="btn btn-info btn-round">
               <i class="material-icons">add_circle_outline</i> Add
             <div class="ripple-container"></div></button>
             <button class="btn btn-info btn-round">
@@ -83,7 +112,7 @@
             <div class="ripple-container"></div></button>
             
             </div>
-            <div class="row">
+            <div id="itemTableDiv" class="row">
             	<div class="table-responsive">
 		                  <table id="itemTable" class="table table-striped">
 				              <thead>
@@ -122,7 +151,92 @@
 				              
 				            </table>
 		                  
-		                  </div></div>
+		                  </div>
+		                  </div>
+		                  <div id="addItemDiv" style="display:none">
+		               		
+	            			<div class="row">
+					              <label class="col-sm-3 col-form-label">Item Name</label>
+					              <div class="col-sm-7">
+					                <div class="form-group bmd-form-group">
+					                  <input class="form-control" type="text" id="newItemName" required="true" aria-required="true">
+					                </div>
+					              </div>
+					              
+	            			</div>
+	            			<div class="row">
+					              <label class="col-sm-3 col-form-label">Item Type</label>
+					              <div class="col-sm-7">
+					                <div class="form-group bmd-form-group">
+					                  <input class="form-control" type="text" id="newItemType" required="true" aria-required="true">
+					                </div>
+					              </div>
+					              
+	            			</div>
+	            			<div class="row">
+					              <label class="col-sm-3 col-form-label">Description</label>
+					              <div class="col-sm-7">
+					                <div class="form-group bmd-form-group">
+					                  <input class="form-control" type="text" id="newItemDesc" required="true" aria-required="true">
+					                </div>
+					              </div>
+					              
+	            			</div>
+	            			<div class="row">
+					              <label class="col-sm-3 col-form-label">Price</label>
+					              <div class="col-sm-7">
+					                <div class="form-group bmd-form-group">
+					                  <input class="form-control" type="number" id="newItemPrice" required="true" aria-required="true">
+					                </div>
+					              </div>
+					              
+	            			</div>
+	            			<div class="row">
+					              <label class="col-sm-3 col-form-label">Available Quantity</label>
+					              <div class="col-sm-7">
+					                <div class="form-group bmd-form-group">
+					                  <input class="form-control" type="number" id="newItemAvailableQuan" required="true" aria-required="true">
+					                </div>
+					              </div>
+					              
+	            			</div>
+	            			<div class="row">
+					              <label class="col-sm-3 col-form-label">Tax</label>
+					              <div class="col-sm-7">
+					                <div class="form-group bmd-form-group">
+					                  <input class="form-control" type="number" id="newItemTax" required="true" aria-required="true">
+					                </div>
+					              </div>
+					              
+	            			</div>
+	            			<div class="row">
+					              <label class="col-sm-3 col-form-label">Status</label>
+					              <div class="col-sm-7">
+					                <div class="form-group bmd-form-group">
+					                  <input class="form-control" type="number" id="newItemStatus" required="true" aria-required="true">
+					                </div>
+					              </div>
+					              
+	            			</div>
+	            			<div class="row">
+					              <label class="col-sm-3 col-form-label">Category Id</label>
+					              <div class="col-sm-7">
+					                <div class="form-group bmd-form-group">
+					                  <input class="form-control" type="number" id="newItemCategoryId" required="true" aria-required="true">
+					                </div>
+					              </div>
+					              
+	            			</div>
+	            			<div class="row">
+	            				<button id="saveNewItem" type="button" class="btn btn-rose">Save</button>
+	            			</div>
+		               </div>   
+		                <div id="loadingItemDiv" style="display:none">
+		                 <label class="col-sm-3 col-form-label"> Saving...Please wait..</label>
+		                 
+		                  </div>  
+		                  
+		                  
             </div>
               
             </div>

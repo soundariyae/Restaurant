@@ -7,11 +7,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
-
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.acc.bean.OrderMgmtBean;
 import com.acc.bean.TablesBean;
 import com.acc.delegate.AdminViewDelegate;
 
@@ -27,9 +28,22 @@ public class AdminViewController {
 	}
 
 	@RequestMapping(value="/getTableDetails.do",method=RequestMethod.POST)
-	public @ResponseBody List<TablesBean> getRfcDetailsForApp(HttpServletRequest request,HttpServletResponse response) {
-		logger.debug("Into the controller get rfc details");
+	public @ResponseBody List<TablesBean> getTableDetails(HttpServletRequest request,HttpServletResponse response) {
+		logger.debug("Into the controller getTableDetails");
 		return adminViewDelegate.getTableDetails();
+	}
+	
+	@RequestMapping(value="/saveNewCategoryDetails.do",method=RequestMethod.POST)
+	public @ResponseBody boolean saveNewCategoryDetails(@RequestBody OrderMgmtBean orderMgmtBean, HttpServletRequest request,HttpServletResponse response) {
+		logger.debug("Into the controller saveNewCategoryDetails-->"+orderMgmtBean.getCategoryName());
+		return adminViewDelegate.saveCategoryDetails(orderMgmtBean);
+	}
+	
+	
+	@RequestMapping(value="/saveNewItemDetails.do",method=RequestMethod.POST)
+	public @ResponseBody boolean saveNewItemDetails(@RequestBody OrderMgmtBean orderMgmtBean, HttpServletRequest request,HttpServletResponse response) {
+		logger.debug("Into the controller saveNewItemDetails-->"+orderMgmtBean.getItemName());
+		return adminViewDelegate.saveItemDetails(orderMgmtBean);
 	}
 	
 }

@@ -47,6 +47,18 @@ public class TableDetailsServiceImpl implements TableDetailsService{
 		
 		return tableDetailsDao.getItems();
 	}
+
+	@Override
+	public boolean saveCategoryDetails(OrderMgmtBean orderMgmtBean) {
+		
+		return tableDetailsDao.saveCategoryDetails(orderMgmtBean);
+	}
+
+	@Override
+	public boolean saveItemDetails(OrderMgmtBean orderMgmtBean) {
+		// TODO Auto-generated method stub
+		return tableDetailsDao.saveItemDetails(orderMgmtBean);
+	}
 	
 	
 
