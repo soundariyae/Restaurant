@@ -36,9 +36,9 @@ public class LoginDelegateImpl implements LoginDelegate {
 	}
 
 	@Override
-	public List<OrderMgmtBean> getItems() {
+	public List<OrderMgmtBean> getItems(int categoryId) {
 		
-		return tableDetailsService.getItems();
+		return tableDetailsService.getItems(categoryId);
 	}
 
 	

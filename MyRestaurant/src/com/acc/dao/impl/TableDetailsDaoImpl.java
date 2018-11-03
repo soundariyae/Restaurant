@@ -110,7 +110,7 @@ public class TableDetailsDaoImpl implements TableDetailsDao{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<OrderMgmtBean> getItems() {
+	public List<OrderMgmtBean> getItems(int categoryId) {
 		try {
 	        Configuration configuration = new Configuration();
 	    configuration.configure("hbm.cfg.xml");
@@ -131,6 +131,9 @@ public class TableDetailsDaoImpl implements TableDetailsDao{
 			queryBuffer.append(" tax as \"itemTax\",");
 			queryBuffer.append(" status as \"itemStatus\"");
 			queryBuffer.append(" FROM item");
+			if(categoryId!=0) {
+				queryBuffer.append(" WHERE categoryId = :categoryId");
+			}
 			
 			System.out.println(queryBuffer.toString());
 			Session session = sessionFactory.openSession();
@@ -145,7 +148,9 @@ public class TableDetailsDaoImpl implements TableDetailsDao{
 					.addScalar("itemTax",StandardBasicTypes.INTEGER)
 					.addScalar("itemStatus",StandardBasicTypes.INTEGER)
 					.setResultTransformer(new AliasToBeanResultTransformer(OrderMgmtBean.class));
-					
+			if(categoryId!=0) {
+				qr.setParameter("categoryId", categoryId);
+			}
 			List<OrderMgmtBean> resultList = qr.list();
 			logger.debug("size of the record --> "+resultList.size());
 			session.close();

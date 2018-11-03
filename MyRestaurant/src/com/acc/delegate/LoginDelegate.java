@@ -11,7 +11,7 @@ public interface LoginDelegate {
 	
 	boolean authenticateUser(UserBean userBean);
 	List<OrderMgmtBean> getCategory();
-	public List<OrderMgmtBean> getItems();
+	public List<OrderMgmtBean> getItems(int categoryId);
 	
 	
 

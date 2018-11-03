@@ -43,9 +43,9 @@ public class TableDetailsServiceImpl implements TableDetailsService{
 	}
 
 	@Override
-	public List<OrderMgmtBean> getItems() {
+	public List<OrderMgmtBean> getItems(int categoryId) {
 		
-		return tableDetailsDao.getItems();
+		return tableDetailsDao.getItems(categoryId);
 	}
 
 	@Override

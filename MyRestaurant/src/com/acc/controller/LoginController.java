@@ -12,10 +12,10 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.acc.bean.OrderMgmtBean;
@@ -99,7 +99,7 @@ public ModelAndView registerUser(@ModelAttribute("loginForm")LoginForm loginForm
 		logger.debug("Load order View");
 		ModelAndView mav = new ModelAndView();
 		List<OrderMgmtBean> categoryList = loginDelegate.getCategory();
-		List<OrderMgmtBean> itemList = loginDelegate.getItems();
+		List<OrderMgmtBean> itemList = loginDelegate.getItems(0);
 		mav.addObject("categoryList", categoryList);
 		mav.addObject("itemList", itemList);
 		mav.setViewName("common/orderView.jsp");
@@ -133,6 +133,17 @@ public ModelAndView registerUser(@ModelAttribute("loginForm")LoginForm loginForm
 		
 		return mav;
 		}
+	@RequestMapping(value="/getCategory.do",method=RequestMethod.POST)
+	public @ResponseBody List<OrderMgmtBean> getCategory(HttpServletRequest request,HttpServletResponse response) {
+		logger.debug("Into the controller getCategory-->"); 
+		return loginDelegate.getCategory();
+	}
 	
+	@RequestMapping(value="/getItemsForCategory.do",method=RequestMethod.POST)
+	public @ResponseBody List<OrderMgmtBean> getItemsForCategory(HttpServletRequest request,HttpServletResponse response) {
+		logger.debug("Into the controller getItemsForCategory-->"); 
+		//int categoryIdInt = Integer.parseInt(categoryId);
+		return loginDelegate.getItems(0);
+	}
 	
 }

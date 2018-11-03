@@ -8,7 +8,7 @@ import com.acc.bean.TablesBean;
 public interface TableDetailsService {
 	List<TablesBean> getTableDetails();
 	List<OrderMgmtBean> getCategory();
-	public List<OrderMgmtBean> getItems();
+	public List<OrderMgmtBean> getItems(int categoryId);
 	boolean saveCategoryDetails(OrderMgmtBean orderMgmtBean);
 	boolean saveItemDetails(OrderMgmtBean orderMgmtBean);
 	

@@ -140,19 +140,19 @@ function loadTableStatus(){
 					console.log("occupancy status-->"+value.occupancyStatus);
 					if(value.occupancyStatus.trim()=="A"){
 						console.log("if");
-				domString += "<button title=\"Available seats : "+value.availableSeat+"\" class=\"table-available\" type=\"submit\" style=\"width: 5em; height: "+tableHeight+";\">" +
+				domString += "<button id=\""+value.tableId+"\" title=\"Available seats : "+value.availableSeat+"\" class=\"table-available\" type=\"submit\" style=\"width: 5em; height: "+tableHeight+";\">" +
 						"<span style=\"font-size: 9px;\">"+value.tableName+"</span><span class=\"fa fa-users\"></span></button><br>";
 					}
 					
 					else{
 						console.log("else");
-						domString += "<button title=\"Available seats : "+value.availableSeat+"\" class=\"table-occupied\" type=\"submit\" style=\"width: 5em; height: "+tableHeight+";\">" +
+						domString += "<button id=\""+value.tableId+"\" title=\"Available seats : "+value.availableSeat+"\" class=\"table-occupied\" type=\"submit\" style=\"width: 5em; height: "+tableHeight+";\">" +
 						"<span style=\"font-size: 9px;\">"+value.tableName+"</span><span class=\"fa fa-users\"></span></button><br>";
 						
 					}
 				});
 				
-				$('#tablesViewTab').html(domString);
+				$('#tablesViewDiv').html(domString);
 				
 			},
 			error : function(){
@@ -224,6 +224,181 @@ $('#addNewItem').on('click',function(){
 	$('#itemTableDiv').hide();
 	$('#addItemDiv').show();
 	
+})
+$('#tablesViewDiv').on("click","button",function(){
+	console.log("table clicked");
+	var tableId = $(this).attr("id");
+	$('#tablesViewDiv').hide();
+	$(menuView).show();
+	console.log(tableId);
+	$.ajax({
+		url : "/MyRestaurant/getCategory.do",
+		contentType : "application/json",
+		type : "POST",
+		//data : JSON.stringify(OrderMgmtBean),
+		success : function(data){
+			var count=0;
+			$.each(data,function(key,value){
+				var catId = value.categoryId;
+				
+			
+				var domForCategory = "<div class=\"card-collapse\"><div class=\"card-header\" role=\"tab\" id=\"headingOne\">"+
+	                "<h5 class=\"mb-0\">"+
+	                  "<a data-toggle=\"collapse\" href=\"#"+catId+"Collapse\" aria-expanded=\"false\" " +
+	                  		"aria-controls=\"collapseOne\" class=\"collapsed\"> "+value.categoryName+""+
+	                   " <i class=\"material-icons\">keyboard_arrow_down</i></a></h5></div>";
+				var domForItemEmptySpace = "<div id=\""+catId+"Collapse\" class=\"collapse\" role=\"tabpanel\" aria-labelledby=\"heading"+catId+"\" data-parent=\"#accordion\" style=\"\">"+
+	                "<div class=\"card-body\">"+
+	                  	"<div class=\"table-responsive table-sales\">"+
+	                  "<table id=\""+catId+"ItemTable\" class=\"table\">"+
+	                    "</table></div></div></div></div>"; 
+				
+				var finalDOMObj = domForCategory + domForItemEmptySpace;
+				
+				$('.dynamicCategory').append(finalDOMObj);
+				count = count+1;
+				if(count == data.length){
+					getItemsWithCategory;
+				}
+			})      
+			
+		
+			
+			
+
+		}
+	
+	
+	})
+})
+
+$('#menuView').on('click','.categoryNode',function(){
+	
+	
+	var categoryId = $(this).attr("id");
+	$.ajax({
+		url : "/MyRestaurant/getItemsForCategory.do",
+		contentType : "application/json",
+		type : "POST",
+		data : JSON.stringify(categoryId),
+		success : function(data){
+			
+			console.log("save success");
+			//TODO
+			//Expand category to show its items 
+			
+		 
+
+		}
+	
+	
+	})
+})
+function getItemsWithCategory(){
+$.ajax({
+		url : "/MyRestaurant/getItemsForCategory.do",
+		contentType : "application/json",
+		type : "POST",
+		//data : JSON.stringify(categoryId),
+		success : function(data){
+			console.log("save success");
+			$.each(data,function(key,value){
+				var catId = value.categoryId;
+				catId = "#"+catId+"ItemTable";
+				var itemDOM = "<tr>"+
+                "<td>"+value.itemName+"</td>"+
+                "<td class=\"text-right\">&#8377 "+value.itemPrice+"</td>"+
+               "<td class=\"text-right\">"+
+               "<button id=\""+value.itemId+"_AddBtn\" class=\"btn btn-success addItemBtn\">Add</button>"+
+                 "<span  class=\""+value.itemId+"_PlusMinusSpan\" style=\"display:none;\"><i id=\""+value.itemId+"_DecBtn\" class=\"material-icons decrementQuan\">remove_circle_outline</i><span id=\""+value.itemId+"_currentCount\" class=\"currentCount\">1</span><i id=\""+value.itemId+"_IncBtn\" class=\"material-icons incrementQuan\">add_circle_outline</i></span>"+
+               "</td>"+
+             "</tr>";
+				$(catId).append(itemDOM);
+			})
+		 
+
+		}
+	
+	
+	})
+}
+
+$('.addItemBtn').on('click',function(){
+	$(this).hide();
+	var elementId = $(this).attr('id');
+	if(elementId.indexOf('_AddBtn') != -1){
+		console.log("Contains button");
+		var itemIdArray = elementId.split('_AddBtn');
+		var itemId = itemIdArray[0];
+		var spanId = "#itemId"+"_PlusMinusSpan";
+		$(spanId).show();
+	
+	}
+	
+	
+	
+	
+	
+})
+
+$('.incrementQuan').on('click',function(){
+	console.log("increment clicked");
+	var incrementId = $(this).attr('id');
+	if(incrementId.indexOf('_IncBtn') != -1){
+		console.log("Contains button");
+		var itemIDArray = incrementId.split('_IncBtn');
+		var itemID = itemIDArray[0];
+		var currentCountitemID = "#"+itemID+"_currentCount";
+		var nowCountString = $(currentCountitemID).text();
+		var nowCount = parseInt(nowCountString);
+		var newCount = nowCount+1;
+		
+		$(currentCountitemID).html(newCount);
+		console.log("current-->"+nowCountString+"after-->"+newCount);
+		}
+	
+	
+	
+	
+})
+
+$('.decrementQuan').on('click',function(){
+	console.log("decrement clicked");
+	var decrementId = $(this).attr('id');
+	if(decrementId.indexOf('_DecBtn') != -1){
+		console.log("Contains button");
+		var itemIDArray = decrementId.split('_DecBtn');
+		var itemID = itemIDArray[0];
+		var currentCountitemID = "#"+itemID+"_currentCount";
+		var nowCountString = $(currentCountitemID).text();
+		var nowCount = parseInt(nowCountString);
+		var newCount = nowCount-1;
+		if(newCount==0){
+			 var plusMinusSpanID =    "#"+itemID+"_PlusMinusSpan";
+			 var addItemBtnID = "#"+itemID+"_AddBtn";
+			$(plusMinusSpanID).hide();
+			$(addItemBtnID).show();
+		}
+		else
+			$(currentCountitemID).html(newCount);
+		
+		
+		
+		console.log("current-->"+nowCountString+"after-->"+newCount);
+		}
+	
+	
+	
+	/*var nowCountString = $('.currentCount').text();
+	var nowCount = parseInt(nowCountString);
+	var newCount = nowCount-1;
+	if(newCount==0){
+		$('.plusMinusSpan').hide();
+		$('.addItemBtn').show();
+	}
+	else
+		$('.currentCount').html(newCount);
+	$('.currentCount').html(newCount);*/
 })
 
 });
