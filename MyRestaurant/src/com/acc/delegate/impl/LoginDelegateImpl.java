@@ -24,9 +24,9 @@ public class LoginDelegateImpl implements LoginDelegate {
 	}
 
 	@Override
-	public boolean authenticateUser(UserBean userBean) {
+	public UserBean authenticateUser(String username, String password) {
 		System.out.println("In delegateImpl");
-		return loginService.authenticateUser(userBean);
+		return loginService.authenticateUser(username, password);
 	}
 
 	@Override
@@ -41,6 +41,10 @@ public class LoginDelegateImpl implements LoginDelegate {
 		return tableDetailsService.getItems(categoryId);
 	}
 
+	@Override
+	public List<String> getRoles(int employee_id){
+		return loginService.getRoles(employee_id);
+	}
 	
 	
 }

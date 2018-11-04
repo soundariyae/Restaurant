@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,11 @@ public class AdminViewController {
 	@RequestMapping(value="/getTableDetails.do",method=RequestMethod.POST)
 	public @ResponseBody List<TablesBean> getTableDetails(HttpServletRequest request,HttpServletResponse response) {
 		logger.debug("Into the controller getTableDetails");
+		
+		HttpSession session =request.getSession(false);
+		List<String> roles = (List<String>) session.getAttribute("roles");
+		System.out.println("GET TABLE DETAILS"+roles.toString());
+		
 		return adminViewDelegate.getTableDetails();
 	}
 	

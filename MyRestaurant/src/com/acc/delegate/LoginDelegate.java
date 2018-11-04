@@ -9,9 +9,10 @@ import com.acc.bean.OrderMgmtBean;
 
 public interface LoginDelegate {
 	
-	boolean authenticateUser(UserBean userBean);
+	UserBean authenticateUser(String username, String password);
 	List<OrderMgmtBean> getCategory();
 	public List<OrderMgmtBean> getItems(int categoryId);
+	List<String> getRoles(int employee_id);
 	
 	
 
