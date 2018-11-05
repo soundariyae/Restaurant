@@ -283,63 +283,57 @@ $(document)
 						$(menuView).show();
 						console.log(tableId);
 
+						$.ajax({
+							url: "/MyRestaurant/getCategory.do",
+							contentType: "application/json",
+							type: "POST",
+							success: function (data) {
+								var count = 0;
+								$
+									.each(
+										data,
+										function (
+											key,
+											value) {
+											var catId = value.categoryId;
 
+											var domForCategory = "<div class=\"card-collapse\"><div class=\"card-header\" role=\"tab\" id=\"headingOne\">" +
+												"<h5 class=\"mb-0\">" +
+												"<a data-toggle=\"collapse\" href=\"#" +
+												catId +
+												"Collapse\" aria-expanded=\"false\" " +
+												"aria-controls=\"collapseOne\" class=\"collapsed\"> " +
+												value.categoryName +
+												"" +
+												" <i class=\"material-icons\">keyboard_arrow_down</i></a></h5></div>";
+											var domForItemEmptySpace = "<div id=\"" +
+												catId +
+												"Collapse\" class=\"collapse\" role=\"tabpanel\" aria-labelledby=\"heading" +
+												catId +
+												"\" data-parent=\"#accordion\" style=\"\">" +
+												"<div class=\"card-body\">" +
+												"<div class=\"table-responsive table-sales\">" +
+												"<table id=\"" +
+												catId +
+												"ItemTable\" class=\"table\">" +
+												"</table></div></div></div></div>";
 
+											var finalDOMObj = domForCategory +
+												domForItemEmptySpace;
 
+											$(
+													'.dynamicCategory')
+												.append(
+													finalDOMObj);
+											count = count + 1;
+											if (count == data.length) {
+												getItemsWithCategory;
+											}
+										})
 
+							}
 
-						/*$
-								.ajax({
-									url : "/MyRestaurant/getCategory.do",
-									contentType : "application/json",
-									type : "POST",
-									success : function(data) {
-										var count = 0;
-										$
-												.each(
-														data,
-														function(
-																key,
-																value) {
-															var catId = value.categoryId;
-
-															var domForCategory = "<div class=\"card-collapse\"><div class=\"card-header\" role=\"tab\" id=\"headingOne\">"
-																	+ "<h5 class=\"mb-0\">"
-																	+ "<a data-toggle=\"collapse\" href=\"#"
-																	+ catId
-																	+ "Collapse\" aria-expanded=\"false\" "
-																	+ "aria-controls=\"collapseOne\" class=\"collapsed\"> "
-																	+ value.categoryName
-																	+ ""
-																	+ " <i class=\"material-icons\">keyboard_arrow_down</i></a></h5></div>";
-															var domForItemEmptySpace = "<div id=\""
-																	+ catId
-																	+ "Collapse\" class=\"collapse\" role=\"tabpanel\" aria-labelledby=\"heading"
-																	+ catId
-																	+ "\" data-parent=\"#accordion\" style=\"\">"
-																	+ "<div class=\"card-body\">"
-																	+ "<div class=\"table-responsive table-sales\">"
-																	+ "<table id=\""
-																	+ catId
-																	+ "ItemTable\" class=\"table\">"
-																	+ "</table></div></div></div></div>";
-
-															var finalDOMObj = domForCategory
-																	+ domForItemEmptySpace;
-
-															$(
-																	'.dynamicCategory')
-																	.append(
-																			finalDOMObj);
-															count = count + 1;
-															if (count == data.length) {
-																getItemsWithCategory;
-															}
-														})
-
-									}
-
-								})*/
+						})
 					})
 
 			$('#menuView').on('click', '.categoryNode', function () {
