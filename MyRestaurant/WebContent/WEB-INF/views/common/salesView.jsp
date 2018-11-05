@@ -30,18 +30,7 @@
 				<div class="tab-pane active show" id="tablesViewTab">
 					<div id="tablesViewDiv"></div>
 					<div id="menuView" style="display: none;">
-						<div class="col-md-6">
-							<div class="card">
-								<div class="card-header">
-									<h4 class="card-title">Items</h4>
-								</div>
-								<div class="card-body">
-									<div id="accordion" class="dynamicCategory" role="tablist">
-
-									</div>
-								</div>
-							</div>
-						</div>
+						
 					</div>
 				</div>
 				<div class="tab-pane" id="messages">
