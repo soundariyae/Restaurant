@@ -35,11 +35,11 @@
 				</a>
 				<div class="collapse" id="collapseExample">
 					<ul class="nav">
-						<li class="nav-item"><a class="nav-link" href="#"> <span
+						<li class="nav-item menu" data-header="My Profile"><a class="nav-link" href="#"> <span
 								class="sidebar-mini"> MP </span> <span class="sidebar-normal">
 									My Profile </span>
 						</a></li>
-						<li class="nav-item"><a class="nav-link" href="#"> <span
+						<li class="nav-item menu" data-header="Edit Profile"><a class="nav-link" href="#"> <span
 								class="sidebar-mini"> EP </span> <span class="sidebar-normal">
 									Edit Profile </span>
 						</a></li>
@@ -54,14 +54,14 @@
 
 
 		<ul class="nav">
-			<li id="salesViewNav" class="nav-item active"
-				style="line-height: 4.5em"><a class="nav-link"
+			<li id="salesViewNav" class="nav-item menu active"
+				style="line-height: 4.5em" data-header="Sales"><a class="nav-link"
 				href="salesView.do"> <span class="sidebar-normal"> Sales
 				</span>
 			</a></li>
 
 			<c:if test="${fn:contains(roles, 'admin')}">
-				<li id="orderViewNav" class="nav-item " style="line-height: 4.5em">
+				<li id="orderViewNav" class="nav-item menu" style="line-height: 4.5em" data-header="Order Management">
 					<a class="nav-link" href="orderView.do"> <span
 						class="sidebar-normal"> Order Management </span>
 				</a>
@@ -69,7 +69,7 @@
 			</c:if>
 			
 			<c:if test="${fn:contains(roles, 'admin')}">
-				<li id="userViewNav" class="nav-item " style="line-height: 4.5em">
+				<li id="userViewNav" class="nav-item menu" style="line-height: 4.5em" data-header="User Management">
 					<a class="nav-link" href="userView.do"> <span
 						class="sidebar-normal"> User Management </span>
 				</a>
@@ -77,17 +77,13 @@
 			</c:if>
 			
 			<c:if test="${fn:contains(roles, 'admin')}">
-				<li id="reportsViewNav" class="nav-item " style="line-height: 4.5em">
+				<li id="reportsViewNav" class="nav-item menu" style="line-height: 4.5em" data-header="Reports">
 					<a class="nav-link" href="reportsView.do"> <span
 						class="sidebar-normal"> Reports </span>
 				</a>
 				</li>
 			</c:if>
-
-
-
-
-			<li id="settingsViewNav" class="nav-item " style="line-height: 4.5em">
+			<li id="settingsViewNav" class="nav-item menu" style="line-height: 4.5em" data-header="Settings">
 				<a class="nav-link" href="settingsView.do"> <span
 					class="sidebar-normal"> Settings </span>
 			</a>

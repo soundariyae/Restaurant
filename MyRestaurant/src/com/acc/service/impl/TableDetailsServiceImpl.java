@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.acc.bean.ItemsBean;
 import com.acc.bean.OrderMgmtBean;
 import com.acc.bean.TablesBean;
 
@@ -58,6 +59,11 @@ public class TableDetailsServiceImpl implements TableDetailsService{
 	public boolean saveItemDetails(OrderMgmtBean orderMgmtBean) {
 		// TODO Auto-generated method stub
 		return tableDetailsDao.saveItemDetails(orderMgmtBean);
+	}
+	
+	@Override
+	public List<ItemsBean> getItems() {
+		return tableDetailsDao.getItems();
 	}
 	
 	

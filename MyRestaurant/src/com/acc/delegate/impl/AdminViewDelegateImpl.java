@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.acc.bean.ItemsBean;
 import com.acc.bean.OrderMgmtBean;
 import com.acc.bean.TablesBean;
 
@@ -44,4 +45,8 @@ public class AdminViewDelegateImpl implements  AdminViewDelegate{
 		return tableDetailsService.saveItemDetails(orderMgmtBean);
 	}
 
+	@Override
+	public List<ItemsBean> getItems() {
+		return tableDetailsService.getItems();
+	}
 }

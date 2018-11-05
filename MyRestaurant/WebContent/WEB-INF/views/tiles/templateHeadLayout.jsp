@@ -2,13 +2,13 @@
 <%-- Resources items - Start --%>
 
 
- <link href="resources/css/package/bootstrap.min.css" rel="stylesheet"
+<link href="resources/css/package/bootstrap.min.css" rel="stylesheet"
 	type="text/css" />
-	<link href="resources/css/package/material-dashboard.min.css" rel="stylesheet"
-	type="text/css" />
+<link href="resources/css/package/material-dashboard.min.css"
+	rel="stylesheet" type="text/css" />
 
 
- <link href="resources/css/package/bootstrap-multiselect.css"
+<link href="resources/css/package/bootstrap-multiselect.css"
 	rel="stylesheet" type="text/css" />
 <link href="resources/css/package/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css" />
@@ -23,9 +23,9 @@
 	type="text/css" />
 <link href="resources/css/custom/restaurant-custom.css" rel="stylesheet"
 	type="text/css" />
- 	
-<link href="resources/css/package/jquery.dataTables.min.css" rel="stylesheet"
-	type="text/css" />	
+
+<link href="resources/css/package/jquery.dataTables.min.css"
+	rel="stylesheet" type="text/css" />
 
 
 <script src="resources/js/package/jquery.min.js" type="text/javascript"></script>
@@ -39,7 +39,8 @@
 	type="text/javascript"></script>
 
 
- <script src="resources/js/custom/restaurant-func.js" type="text/javascript"></script>
+<script src="resources/js/custom/restaurant-func.js"
+	type="text/javascript"></script>
 <!-- <script src="resources/js/custom/aicop_func.js" type="text/javascript"></script> -->
 
 
