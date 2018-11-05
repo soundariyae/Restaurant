@@ -283,7 +283,7 @@ $(document)
 						$(menuView).show();
 						console.log(tableId);
 
-						$.ajax({
+						/*$.ajax({
 							url: "/MyRestaurant/getCategory.do",
 							contentType: "application/json",
 							type: "POST",
@@ -333,7 +333,42 @@ $(document)
 
 							}
 
-						})
+						})*/
+						$.ajax({
+							url: "/MyRestaurant/items.do",
+							contentType: "application/json",
+							type: "POST",
+							success: function (data) {
+								var categoryArray = [];
+								console.log("data length -->"+data.length);
+								$.each(data,function(key,value){
+									categoryArray.push(value.category_name);
+									console.log("categoryArray-->"+categoryArray);
+								})
+								var categorySet = new Set(categoryArray);
+								
+								var domStringCategory="<div class=\"col-lg-6 col-md-12\">"+
+													      "<div class=\"card\">"+
+													        "<div class=\"card-header card-header-text card-header-warning\">"+
+													          "<div class=\"card-text\">"+
+													            "<h4 class=\"card-title\">Categories</h4></div></div>"+
+													        "<div class=\"card-body table-responsive\">"+
+													          "<table class=\"table table-hover\">"+
+													            "<thead class=\"text-warning\">"+
+													              "<tr><th>Category List</th></tr></thead><tbody>";
+								$.each(categorySet,function(catKey,catValue){
+									console.log("catValue=>"+catValue);
+									domStringCategory = domStringCategory + "<tr><td id="+catValue+">"+catValue+"</td></tr>"
+								})
+								domStringCategory = domStringCategory +"</tbody></table></div></div></div>";
+								
+								$('#menuView').html(domStringCategory);
+								$('#menuView').show();
+							}
+							});
+						
+						
+						
 					})
 
 			$('#menuView').on('click', '.categoryNode', function () {

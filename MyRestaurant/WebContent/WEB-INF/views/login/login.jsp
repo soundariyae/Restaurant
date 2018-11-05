@@ -13,7 +13,7 @@
 
 
 	<div class="page-header header-filter"
-		style="background-image: url('resources/images/	.jpg'); background-size: cover; background-position: top center;">
+		style="background-image: url('resources/images/	res2.jpg'); background-size: cover; background-position: top center;">
 
 		<div class="container">
 			<div class="row">

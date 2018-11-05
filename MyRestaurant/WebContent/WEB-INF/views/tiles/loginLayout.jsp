@@ -8,7 +8,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AICOP |</title>
+<title>MyRestaurant |</title>
 
 
 <link href="resources/css/package/bootstrap.min.css" rel="stylesheet"

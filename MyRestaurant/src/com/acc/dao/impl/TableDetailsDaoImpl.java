@@ -195,6 +195,7 @@ public class TableDetailsDaoImpl implements TableDetailsDao {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<ItemsBean> getItems() {
 		StringBuilder queryBuffer = new StringBuilder();

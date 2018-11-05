@@ -131,8 +131,10 @@ public class LoginController {
 
 		return mav;
 	}
+	
+	
 
-	@RequestMapping(value = "/getCategory.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/getCategory.do", method = RequestMethod.POST)
 	public @ResponseBody List<OrderMgmtBean> getCategory(HttpServletRequest request, HttpServletResponse response) {
 		logger.debug("Into the controller getCategory-->");
 		return loginDelegate.getCategory();
