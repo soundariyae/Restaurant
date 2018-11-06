@@ -339,36 +339,44 @@ $(document)
 							contentType: "application/json",
 							type: "POST",
 							success: function (data) {
-								var categoryArray = [];
-								console.log("data length -->"+data.length);
-								$.each(data,function(key,value){
-									categoryArray.push(value.category_name);
-									console.log("categoryArray-->"+categoryArray);
-								})
-								var categorySet = new Set(categoryArray);
-								
-								var domStringCategory="<div class=\"col-lg-6 col-md-12\">"+
-													      "<div class=\"card\">"+
-													        "<div class=\"card-header card-header-text card-header-warning\">"+
-													          "<div class=\"card-text\">"+
-													            "<h4 class=\"card-title\">Categories</h4></div></div>"+
-													        "<div class=\"card-body table-responsive\">"+
-													          "<table class=\"table table-hover\">"+
-													            "<thead class=\"text-warning\">"+
-													              "<tr><th>Category List</th></tr></thead><tbody>";
-								$.each(categorySet,function(catKey,catValue){
-									console.log("catValue=>"+catValue);
-									domStringCategory = domStringCategory + "<tr><td id="+catValue+">"+catValue+"</td></tr>"
-								})
-								domStringCategory = domStringCategory +"</tbody></table></div></div></div>";
-								
-								$('#menuView').html(domStringCategory);
-								$('#menuView').show();
+								console.log("data length -->" + data.length);
+								var categories = [];
+								if (data) {
+									data.forEach(element => {
+										categories.push(element.category_name);
+									});
+									categories.push('pasta');
+									categories = [...new Set(categories)];
+									console.log("Available categories : " + categories);
+
+									var dom = [];
+									
+									categories.forEach(category => {
+										dom.push(createCategoryCard(category));
+									});
+									
+									$('#menuView').html(`<div class="card-deck">${dom}</div>`);
+									$('#menuView').show();
+								}
+
 							}
-							});
-						
-						
-						
+						});
+
+						function capitalizeFirstLetter(string) {
+							return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+						}
+
+						function createCategoryCard(category) {
+							return `<div class="card" style="width: 18rem;">
+							<img class="card-img-top" src="./resources/images/${category.toLowerCase()}-category.jpg" alt="Card image cap">
+							<div class="card-body">
+							  <p class="card-text">${capitalizeFirstLetter(category)}</p>
+							</div>
+						  </div>`;
+						}
+
+
+
 					})
 
 			$('#menuView').on('click', '.categoryNode', function () {

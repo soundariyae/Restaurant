@@ -199,7 +199,7 @@ public class TableDetailsDaoImpl implements TableDetailsDao {
 	@Override
 	public List<ItemsBean> getItems() {
 		StringBuilder queryBuffer = new StringBuilder();
-		queryBuffer.append("select a.item_id,a.description,a.price,a.available_quantity,a.pic_filename,a.tax,a.status,a.name , b.category_name from item a, category b where a.category_id =b.category_id");
+		queryBuffer.append("select a.item_id,a.description,a.price,a.available_quantity,a.pic_filename,a.tax,a.status,a.name , b.category_name,b.category_id from item a, category b where a.category_id =b.category_id");
 		
 
 		System.out.println(queryBuffer.toString());
@@ -214,6 +214,7 @@ public class TableDetailsDaoImpl implements TableDetailsDao {
 				.addScalar("status", StandardBasicTypes.BOOLEAN)
 				.addScalar("name", StandardBasicTypes.STRING)
 				.addScalar("category_name", StandardBasicTypes.STRING)
+				.addScalar("category_id",StandardBasicTypes.INTEGER)
 				.setResultTransformer(new AliasToBeanResultTransformer(ItemsBean.class));
 		
 		List<ItemsBean> resultList = qr.list();
