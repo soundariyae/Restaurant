@@ -37,14 +37,6 @@ $(document)
 			$("#orderViewNav").on("click", function () {
 				$("#dashBoardTitle a").text("Order Management");
 			});
-			/* 
-						$('.menu').on('click',function() {
-							console.log('clicked '+$(this));
-							$(".menu").removeClass("active");
-							$(this).addClass("active");
-							$('.page-header#content').text($(this).attr('data-header'));
-						}); */
-
 
 			if (window.location.href.indexOf("salesView") > -1) {
 				loadTableStatus();
@@ -337,7 +329,7 @@ $(document)
 						$.ajax({
 							url: "/MyRestaurant/items.do",
 							contentType: "application/json",
-							type: "POST",
+							type: "GET",
 							success: function (data) {
 								console.log("data length -->" + data.length);
 								var categories = [];
@@ -350,11 +342,11 @@ $(document)
 									console.log("Available categories : " + categories);
 
 									var dom = [];
-									
+
 									categories.forEach(category => {
 										dom.push(createCategoryCard(category));
 									});
-									
+
 									$('#menuView').html(`<div class="card-deck">${dom}</div>`);
 									$('#menuView').show();
 								}
@@ -367,12 +359,12 @@ $(document)
 						}
 
 						function createCategoryCard(category) {
-							return `<div class="card" style="width: 18rem;">
-							<img class="card-img-top" src="./resources/images/${category.toLowerCase()}-category.jpg" alt="Card image cap">
-							<div class="card-body">
-							  <p class="card-text">${capitalizeFirstLetter(category)}</p>
-							</div>
-						  </div>`;
+							return `<div class="card" style="width: 20rem;">
+									<img class="card-img-top" src="./resources/images/${category.toLowerCase()}-category.jpg" alt="Card image cap">
+									<div class="card-body">
+									  <p class="card-text">${capitalizeFirstLetter(category)}</p>
+									</div>
+								  </div>`;
 						}
 
 

@@ -2,13 +2,13 @@
 <footer class="footer">
     <div class="container-fluid">
         <nav class="float-left">
-          <ul>
-              
-          </ul>
+            <ul>
+
+            </ul>
         </nav>
         <div class="copyright float-right">
-            ©2018 <i class="material-icons">arrow_forward_ios</i> DotWorld Technologies
+            ï¿½2018 <i class="material-icons">arrow_forward_ios</i> DotWorld Technologies
         </div>
-    </div> 
-    </footer>
+    </div>
+</footer>
 <!-- /footer content -->

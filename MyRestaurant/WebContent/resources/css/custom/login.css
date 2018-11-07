@@ -1,0 +1,123 @@
+   html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Oxygen', sans-serif;
+        }
+
+        .row {
+            height: 100vh;
+        }
+
+        .image {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: url('./assets/images/jason-leung-537357-unsplash.jpg') center center no-repeat;
+            background-size: cover;
+        }
+
+        .image:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgb(109,0,116);
+            background: linear-gradient(40deg, rgba(109,0,116,0.9584034297312675) 0%, rgba(97,9,121,0.9443978274903712) 35%, rgba(140,17,255,0.9584034297312675) 100%); 
+            opacity: 0.8;
+        }
+        .left, .right {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .text-content {
+            text-align: justify;
+            /* For Edge */
+            -moz-text-align-last: center;
+            /* For Firefox prior 58.0 */
+            text-align-last: center;
+        }
+
+        .heading {
+            font-size: 30px;
+            color: #983dff;
+            display: block;
+            word-spacing: normal;
+        }
+
+        .sub-heading {
+            color:gainsboro;
+            word-spacing: normal;
+        }
+        .login-form {
+            margin: 50px auto !important;
+        }
+        input {
+            margin: 15px auto !important;
+            border: 0px !important;
+            border-bottom: 1px solid !important;
+            border-radius: 0 !important;
+            border-color: gainsboro !important;
+            text-align: left;
+            text-align-last: left;
+            width: 50px;
+        }
+        .form-control:focus, input:focus {
+            border-color: rgb(109, 0, 116) !important;
+        }
+       
+        .form-control:focus {
+            color: rgb(109, 0, 116);
+            background-color: #fff;
+            border-color: rgb(109, 0, 116) !important;
+            outline: 0;
+            box-shadow:none !important;
+        }
+        .mobile .left, .tablet .left {
+            display: none;
+        } 
+        button[type=submit] {
+            margin: 20px 0 !important;
+            width: 250px !important;
+            background: rgb(109, 0, 116);
+            background: linear-gradient(40deg, rgba(109, 0, 116, 0.9) 0%, rgba(97, 9, 121, 0.9) 35%, rgba(140, 17, 255, 0.9) 100%);
+        }
+        button[type=submit]:active{
+            background: rgb(109, 0, 116) !important;
+        }
+        button[type=submit]:focus{
+            box-shadow: 0 0 0 .2rem rgba(109, 0, 116,.5) !important;
+        }
+        .btn-primary:hover {
+            color: #fff;
+            background-color: rgb(109, 0, 116) !important;;
+            border-color: rgb(109, 0, 116) !important;;
+        }
+        footer {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            color: gainsboro;
+            text-align: center;
+        }
+        input[required] {
+            border-color: none !important;
+        }

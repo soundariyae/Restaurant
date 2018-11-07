@@ -56,7 +56,7 @@ public class AdminViewController {
 		return adminViewDelegate.saveItemDetails(orderMgmtBean);
 	}
 
-	@RequestMapping(value = "/items.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/items.do", method = RequestMethod.GET)
 	public @ResponseBody List<ItemsBean> getItems(HttpServletRequest request, HttpServletResponse response) {
 		return adminViewDelegate.getItems();
 	}
