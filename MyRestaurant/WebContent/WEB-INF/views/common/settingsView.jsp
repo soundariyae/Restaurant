@@ -6,10 +6,8 @@
 	<div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;">
 	</div>
 </div>
-<div class="ps-scrollbar-y-rail"
-	style="top: 0px; right: 0px; height: 357px;">
-	<div class="ps-scrollbar-y" tabindex="0"
-		style="top: 0px; height: 149px;"></div>
+<div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px; height: 357px;">
+	<div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 149px;"></div>
 </div>
 
 <!-- <script src="resources/js/custom/restaurant-func.js"

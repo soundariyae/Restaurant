@@ -182,205 +182,194 @@ $(document)
 
 					});
 			}
+			
 			$('#addCategory').on('click', function () {
 				$('#categoryTableDiv').hide();
 				$('#addCategoryDiv').show();
 
 			})
-			$('#saveNewCategory')
-				.on(
-					'click',
-					function () {
-						$('#addCategoryDiv').hide();
-						$('#loadingDiv').show();
-						OrderMgmtBean = new Object();
 
-						OrderMgmtBean.categoryName = $(
-							'#newCategoryName').val();
-						OrderMgmtBean.categoryDesc = $(
-							'#newCategoryDesc').val();
-						$
-							.ajax({
-								url: "/MyRestaurant/saveNewCategoryDetails.do",
-								contentType: "application/json",
-								type: "POST",
-								data: JSON
-									.stringify(OrderMgmtBean),
-								success: function (data) {
-									console
-										.log("save success");
+			$('#saveNewCategory').on('click', function () {
+				$('#addCategoryDiv').hide();
+				$('#loadingDiv').show();
+				OrderMgmtBean = new Object();
 
-									location.reload();
+				OrderMgmtBean.categoryName = $(
+					'#newCategoryName').val();
+				OrderMgmtBean.categoryDesc = $(
+					'#newCategoryDesc').val();
+				$
+					.ajax({
+						url: "/MyRestaurant/saveNewCategoryDetails.do",
+						contentType: "application/json",
+						type: "POST",
+						data: JSON
+							.stringify(OrderMgmtBean),
+						success: function (data) {
+							console
+								.log("save success");
 
-								}
+							location.reload();
 
-							})
+						}
+
 					})
+			})
 
-			$('#saveNewItem')
-				.on(
-					'click',
-					function () {
-						$('#addItemDiv').hide();
-						$('#loadingItemDiv').show();
-						OrderMgmtBean = new Object();
+			$('#saveNewItem').on('click', function () {
+				$('#addItemDiv').hide();
+				$('#loadingItemDiv').show();
+				OrderMgmtBean = new Object();
 
-						OrderMgmtBean.itemName = $(
-							'#newItemName').val();
-						OrderMgmtBean.itemType = $(
-							'#newItemType').val();
-						OrderMgmtBean.itemDescription = $(
-							'#newItemDesc').val();
-						OrderMgmtBean.itemPrice = $(
-							'#newItemPrice').val();
-						OrderMgmtBean.availableQuantity = $(
-							'#newItemAvailableQuan').val();
-						OrderMgmtBean.itemTax = $('#newItemTax')
-							.val();
-						OrderMgmtBean.itemStatus = $(
-							'#newItemStatus').val();
-						OrderMgmtBean.categoryId = $(
-							'#newItemCategoryId').val();
-						$
-							.ajax({
-								url: "/MyRestaurant/saveNewItemDetails.do",
-								contentType: "application/json",
-								type: "POST",
-								data: JSON
-									.stringify(OrderMgmtBean),
-								success: function (data) {
-									console
-										.log("save success");
+				OrderMgmtBean.itemName = $(
+					'#newItemName').val();
+				OrderMgmtBean.itemType = $(
+					'#newItemType').val();
+				OrderMgmtBean.itemDescription = $(
+					'#newItemDesc').val();
+				OrderMgmtBean.itemPrice = $(
+					'#newItemPrice').val();
+				OrderMgmtBean.availableQuantity = $(
+					'#newItemAvailableQuan').val();
+				OrderMgmtBean.itemTax = $('#newItemTax')
+					.val();
+				OrderMgmtBean.itemStatus = $(
+					'#newItemStatus').val();
+				OrderMgmtBean.categoryId = $(
+					'#newItemCategoryId').val();
+				$
+					.ajax({
+						url: "/MyRestaurant/saveNewItemDetails.do",
+						contentType: "application/json",
+						type: "POST",
+						data: JSON
+							.stringify(OrderMgmtBean),
+						success: function (data) {
+							console
+								.log("save success");
 
-									location.reload();
+							location.reload();
 
-								}
+						}
 
-							})
 					})
+			})
 
 			$('#addNewItem').on('click', function () {
 				$('#itemTableDiv').hide();
 				$('#addItemDiv').show();
 
 			})
-			$('#tablesViewDiv')
-				.on(
-					"click",
-					"button",
-					function () {
-						console.log("table clicked");
-						var tableId = $(this).attr("id");
-						$('#tablesViewDiv').hide();
-						$(menuView).show();
-						console.log(tableId);
 
-						/*$.ajax({
-							url: "/MyRestaurant/getCategory.do",
-							contentType: "application/json",
-							type: "POST",
-							success: function (data) {
-								var count = 0;
-								$
-									.each(
-										data,
-										function (
-											key,
-											value) {
-											var catId = value.categoryId;
+			$('#tablesViewDiv').on("click", "button", function () {
+				console.log("table clicked");
+				var tableId = $(this).attr("id");
+				$('#tablesViewDiv').hide();
+				$(menuView).show();
+				console.log(tableId);
 
-											var domForCategory = "<div class=\"card-collapse\"><div class=\"card-header\" role=\"tab\" id=\"headingOne\">" +
-												"<h5 class=\"mb-0\">" +
-												"<a data-toggle=\"collapse\" href=\"#" +
-												catId +
-												"Collapse\" aria-expanded=\"false\" " +
-												"aria-controls=\"collapseOne\" class=\"collapsed\"> " +
-												value.categoryName +
-												"" +
-												" <i class=\"material-icons\">keyboard_arrow_down</i></a></h5></div>";
-											var domForItemEmptySpace = "<div id=\"" +
-												catId +
-												"Collapse\" class=\"collapse\" role=\"tabpanel\" aria-labelledby=\"heading" +
-												catId +
-												"\" data-parent=\"#accordion\" style=\"\">" +
-												"<div class=\"card-body\">" +
-												"<div class=\"table-responsive table-sales\">" +
-												"<table id=\"" +
-												catId +
-												"ItemTable\" class=\"table\">" +
-												"</table></div></div></div></div>";
 
-											var finalDOMObj = domForCategory +
-												domForItemEmptySpace;
+				var items = [];
+				$.ajax({
+					url: "/MyRestaurant/items.do",
+					contentType: "application/json",
+					type: "GET",
+					success: function (data) {
+						items = data;
+						console.log("data length -->" + data.length);
+						var categories = [];
+						if (data) {
+							data.forEach(element => {
+								categories.push({
+									category_id: element.category_id,
+									category_name: element.category_name
+								});
+							});
 
-											$(
-													'.dynamicCategory')
-												.append(
-													finalDOMObj);
-											count = count + 1;
-											if (count == data.length) {
-												getItemsWithCategory;
-											}
-										})
-
+							// Use Map (ES6) to retain only unique elements
+							let map = new Map();
+							for (element of categories) {
+								map.set(element.category_id, element);
 							}
 
-						})*/
-						$.ajax({
-							url: "/MyRestaurant/items.do",
-							contentType: "application/json",
-							type: "GET",
-							success: function (data) {
-								console.log("data length -->" + data.length);
-								var categories = [];
-								if (data) {
-									data.forEach(element => {
-										categories.push(element.category_name);
-									});
-									categories = [...new Set(categories)];
-									console.log("Available categories : " + categories);
+							categories = [];
+							map.forEach((value, key, map) => {
+								categories.push(value);
+							});
 
-									var dom = "";
+							console.log("Available categories : " + categories);
 
-									categories.forEach((category, index) => {
-										index = index + 1;
-										dom += createCategoryCard(category);
-										//create 4 cards per row
-										if (index % 4 == 0) {
-											console.log("%4")
-											$('#menuView').append(`<div class="card-deck">${dom}</div>`);
-											dom = "";
-										}
-										if (index == categories.length - 1) {
-											console.log("last");
-											$('#menuView').append(`<div class="card-deck">${dom}</div>`);
-											dom = "";
-										}
-									});
+							var dom = "";
 
-
-									$('#menuView').show();
+							categories.forEach((category, index) => {
+								index = index + 1;
+								dom += createCategoryCard(category);
+								//create 4 cards per row
+								if (index % 4 == 0) {
+									console.log("%4")
+									$('#menuView').append(`<div class="card-deck">${dom}</div>`);
+									dom = "";
 								}
-
-							}
-						});
-
-						function capitalizeFirstLetter(string) {
-							return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+								if (index == categories.length - 1) {
+									console.log("last");
+									$('#menuView').append(`<div class="card-deck">${dom}</div>`);
+									dom = "";
+								}
+							});
+							$('#menuView').show();
+							const keys = Array.from(document.querySelectorAll('.single-category'));
+							keys.forEach(key => key.addEventListener('click', showItems));
 						}
 
-						function createCategoryCard(category) {
-							return `<div class="card" style="max-width: 20rem;">
-									<img class="card-img-top" src="./resources/images/${category.toLowerCase()}-category.jpg" alt="Card image cap">
+					}
+				});
+
+				function showItems() {
+					$('.single-category').hide();
+
+					var category = $(this).data('category-id');
+					var required = [];
+					items.forEach(element => {
+						if (element.category_id == category) {
+							required.push(element);
+						}
+					})
+					console.log(required);
+
+					var dom = "";
+					required.forEach(element => {
+						dom += createItemCard(element);
+					})
+
+					$('#menuView').html(dom);
+					$('#menuView').show();
+				}
+
+				function createItemCard(item) {
+					return `<div class="card"  style="max-width: 20rem;">
+							<img class="card-img-top" src="./resources/images/item.jpg" alt="Card image cap">
+							<div class="card-body">
+							  <p class="card-text">${capitalizeFirstLetter(item.name)}</p>
+							</div>
+						  </div>`;
+				}
+
+				function capitalizeFirstLetter(string) {
+					return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+				}
+
+				function createCategoryCard(category) {
+					return `<div class="card single-category" id ='category-${category.category_id}' data-category-id='${category.category_id}' style="max-width: 20rem;">
+									<img class="card-img-top" src="./resources/images/${category.category_name.toLowerCase()}-category.jpg" alt="Card image cap">
 									<div class="card-body">
-									  <p class="card-text">${capitalizeFirstLetter(category)}</p>
+									  <p class="card-text">${capitalizeFirstLetter(category.category_name)}</p>
 									</div>
 								  </div>`;
-						}
+				}
 
 
 
-					})
+			})
 
 			$('#menuView').on('click', '.categoryNode', function () {
 
@@ -463,59 +452,54 @@ $(document)
 
 			})
 
-			$('.incrementQuan').on(
-				'click',
-				function () {
-					console.log("increment clicked");
-					var incrementId = $(this).attr('id');
-					if (incrementId.indexOf('_IncBtn') != -1) {
-						console.log("Contains button");
-						var itemIDArray = incrementId
-							.split('_IncBtn');
-						var itemID = itemIDArray[0];
-						var currentCountitemID = "#" + itemID +
-							"_currentCount";
-						var nowCountString = $(currentCountitemID)
-							.text();
-						var nowCount = parseInt(nowCountString);
-						var newCount = nowCount + 1;
+			$('.incrementQuan').on('click', function () {
+				console.log("increment clicked");
+				var incrementId = $(this).attr('id');
+				if (incrementId.indexOf('_IncBtn') != -1) {
+					console.log("Contains button");
+					var itemIDArray = incrementId
+						.split('_IncBtn');
+					var itemID = itemIDArray[0];
+					var currentCountitemID = "#" + itemID +
+						"_currentCount";
+					var nowCountString = $(currentCountitemID)
+						.text();
+					var nowCount = parseInt(nowCountString);
+					var newCount = nowCount + 1;
 
+					$(currentCountitemID).html(newCount);
+					console.log("current-->" + nowCountString +
+						"after-->" + newCount);
+				}
+
+			})
+
+			$('.decrementQuan').on('click', function () {
+				console.log("decrement clicked");
+				var decrementId = $(this).attr('id');
+				if (decrementId.indexOf('_DecBtn') != -1) {
+					console.log("Contains button");
+					var itemIDArray = decrementId
+						.split('_DecBtn');
+					var itemID = itemIDArray[0];
+					var currentCountitemID = "#" + itemID +
+						"_currentCount";
+					var nowCountString = $(currentCountitemID)
+						.text();
+					var nowCount = parseInt(nowCountString);
+					var newCount = nowCount - 1;
+					if (newCount == 0) {
+						var plusMinusSpanID = "#" + itemID +
+							"_PlusMinusSpan";
+						var addItemBtnID = "#" + itemID +
+							"_AddBtn";
+						$(plusMinusSpanID).hide();
+						$(addItemBtnID).show();
+					} else
 						$(currentCountitemID).html(newCount);
-						console.log("current-->" + nowCountString +
-							"after-->" + newCount);
-					}
 
-				})
-
-			$('.decrementQuan').on(
-				'click',
-				function () {
-					console.log("decrement clicked");
-					var decrementId = $(this).attr('id');
-					if (decrementId.indexOf('_DecBtn') != -1) {
-						console.log("Contains button");
-						var itemIDArray = decrementId
-							.split('_DecBtn');
-						var itemID = itemIDArray[0];
-						var currentCountitemID = "#" + itemID +
-							"_currentCount";
-						var nowCountString = $(currentCountitemID)
-							.text();
-						var nowCount = parseInt(nowCountString);
-						var newCount = nowCount - 1;
-						if (newCount == 0) {
-							var plusMinusSpanID = "#" + itemID +
-								"_PlusMinusSpan";
-							var addItemBtnID = "#" + itemID +
-								"_AddBtn";
-							$(plusMinusSpanID).hide();
-							$(addItemBtnID).show();
-						} else
-							$(currentCountitemID).html(newCount);
-
-						console.log("current-->" + nowCountString +
-							"after-->" + newCount);
-					}
-				})
-
+					console.log("current-->" + nowCountString +
+						"after-->" + newCount);
+				}
+			})
 		});
