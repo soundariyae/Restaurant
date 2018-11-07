@@ -29,9 +29,35 @@
 			<div class="tab-content">
 				<div class="tab-pane active show" id="tablesViewTab">
 					<div id="tablesViewDiv"></div>
+					<div class="row">
+					<div class="col-lg-6 col-md-6">
 					<div id="menuView" style="display: none;">
 
-					</div>
+					</div></div>
+					<div id="cart" class="col-lg-6 col-md-6" style="display: none;">
+					<div class="card">
+				        <div class="card-header card-header-text card-header-warning">
+				          <div class="card-text">
+				            <h4 class="card-title">Your Cart</h4>
+				           
+				          </div>
+				        </div>
+				        <div class="card-body table-responsive">
+				          <table id="cartTable" class="table table-hover">
+				            <thead class="text-warning">
+				              <tr><th>Item Name</th>
+				              <th>Quantity</th>
+				              <th>Price</th>
+				              <th>Net Price</th>
+				            </tr></thead>
+				            <tbody>
+				              
+				              
+				            </tbody>
+				          </table>
+				        </div>
+      </div>
+      </div></div>
 				</div>
 				<div class="tab-pane" id="messages">
 					<table class="table">
