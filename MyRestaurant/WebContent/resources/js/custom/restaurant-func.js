@@ -337,17 +337,28 @@ $(document)
 									data.forEach(element => {
 										categories.push(element.category_name);
 									});
-									categories.push('pasta');
 									categories = [...new Set(categories)];
 									console.log("Available categories : " + categories);
 
-									var dom = [];
+									var dom = "";
 
-									categories.forEach(category => {
-										dom.push(createCategoryCard(category));
+									categories.forEach((category, index) => {
+										index = index + 1;
+										dom += createCategoryCard(category);
+										//create 4 cards per row
+										if (index % 4 == 0) {
+											console.log("%4")
+											$('#menuView').append(`<div class="card-deck">${dom}</div>`);
+											dom = "";
+										}
+										if (index == categories.length - 1) {
+											console.log("last");
+											$('#menuView').append(`<div class="card-deck">${dom}</div>`);
+											dom = "";
+										}
 									});
 
-									$('#menuView').html(`<div class="card-deck">${dom}</div>`);
+
 									$('#menuView').show();
 								}
 
@@ -359,7 +370,7 @@ $(document)
 						}
 
 						function createCategoryCard(category) {
-							return `<div class="card" style="width: 20rem;">
+							return `<div class="card" style="max-width: 20rem;">
 									<img class="card-img-top" src="./resources/images/${category.toLowerCase()}-category.jpg" alt="Card image cap">
 									<div class="card-body">
 									  <p class="card-text">${capitalizeFirstLetter(category)}</p>

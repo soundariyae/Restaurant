@@ -29,7 +29,9 @@
 			<div class="tab-content">
 				<div class="tab-pane active show" id="tablesViewTab">
 					<div id="tablesViewDiv"></div>
-					<div id="menuView" style="display: none;"></div>
+					<div id="menuView" style="display: none;">
+						
+					</div>
 				</div>
 				<div class="tab-pane" id="messages">
 					<table class="table">
