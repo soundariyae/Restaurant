@@ -284,7 +284,7 @@ $(document)
 					})
 					console.log(required);
 
-					var dom = `<div class="col-lg-6 col-md-6"><a id="showCategory">Back to Categories</a>`;
+					var dom = `<div class="col-lg-6 col-md-6"><a id="showCategory"><u>Back to Categories</u></a><br><input type="text" class="form-control" placeholder="Search..." id="search-criteria"/>`;
 					required.forEach(element => {
 						dom += createItemCard(element);
 					})
@@ -294,9 +294,9 @@ $(document)
 				}
 			
 				function createItemCard(item) {
-					return `<div class="card"  style="max-width: 20rem;">
+					return `<div class="card search-card"  style="max-width: 20rem;">
 							<img class="card-img-top" src="./resources/images/item.jpg" alt="Card image cap">
-							<div class="card-body">
+							<div class="card-body search-div">
 							  <p class="card-text">${capitalizeFirstLetter(item.name)}</p>
 							  <button id="${item.item_id}" class="btn btn-success add-item">Add</button>
 							</div>
@@ -548,4 +548,12 @@ $(document)
 				console.log("TOTAL ==> "+total);
 				$('#totalPrice').text(total);
 			}
+			$('#menuView').on("keyup","#search-criteria", function() {
+				console.log("key up");
+			    var g = $(this).val().toLowerCase();
+			    $(".search-card .search-div p").each(function() {
+			        var s = $(this).text().toLowerCase();
+			        $(this).closest('.search-card')[ s.indexOf(g) !== -1 ? 'show' : 'hide' ]();
+			    });
+			});
 		});
