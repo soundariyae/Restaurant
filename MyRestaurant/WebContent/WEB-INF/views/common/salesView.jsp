@@ -54,6 +54,10 @@
 				              
 				              
 				            </tbody>
+				            <tfoot>
+				            <td colspan="2"></td>
+				            <td class="td-total">Total</td><td id="totalPrice" class="td-price"></td>
+				            </tfoot>
 				          </table>
 				        </div>
       </div>

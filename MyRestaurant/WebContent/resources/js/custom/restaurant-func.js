@@ -133,8 +133,6 @@ $(document)
 						contentType: "application/json",
 						type: "POST",
 						success: function (data) {
-							console.log("Success--> Length");
-							console.log(data.length);
 							var domString = "";
 							$
 								.each(
@@ -142,13 +140,10 @@ $(document)
 									function (key, value) {
 										var tableHeight = value.capacity +
 											"em";
-										console
-											.log("occupancy status-->" +
-												value.occupancyStatus);
+										
 										if (value.occupancyStatus
 											.trim() == "A") {
-											console
-												.log("if");
+											
 											domString += "<button id=\"" +
 												value.tableId +
 												"\" title=\"Available seats : " +
@@ -160,8 +155,7 @@ $(document)
 												value.tableName +
 												"</span><span class=\"fa fa-users\"></span></button><br>";
 										} else {
-											console
-												.log("else");
+											
 											domString += "<button id=\"" +
 												value.tableId +
 												"\" title=\"Available seats : " +
@@ -270,10 +264,59 @@ $(document)
 				$('#tablesViewDiv').hide();
 				$(menuView).show();
 				$('#cart').show();
-				console.log(tableId);
+				console.log("before call");
 
-
+				showCategoryAndStatus();
+				console.log("after call");
 				//var items = [];
+				
+			})
+			
+				function showItems() {
+					$('.single-category').hide();
+
+					var category = $(this).data('category-id');
+					var required = [];
+					items.forEach(element => {
+						if (element.category_id == category) {
+							required.push(element);
+						}
+					})
+					console.log(required);
+
+					var dom = `<div class="col-lg-6 col-md-6"><a id="showCategory">Back to Categories</a>`;
+					required.forEach(element => {
+						dom += createItemCard(element);
+					})
+						dom += `</div><div class="col-lg-6 col-md-12"></div>`;
+					$('#menuView').html(dom);
+					$('#menuView').show();
+				}
+			
+				function createItemCard(item) {
+					return `<div class="card"  style="max-width: 20rem;">
+							<img class="card-img-top" src="./resources/images/item.jpg" alt="Card image cap">
+							<div class="card-body">
+							  <p class="card-text">${capitalizeFirstLetter(item.name)}</p>
+							  <button id="${item.item_id}" class="btn btn-success add-item">Add</button>
+							</div>
+						  </div>`;
+				}
+
+				function capitalizeFirstLetter(string) {
+					return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+				}
+
+				function createCategoryCard(category) {
+					return `<div class="card single-category" id ='category-${category.category_id}' data-category-id='${category.category_id}' style="max-width: 20rem;">
+									<img class="card-img-top" src="./resources/images/${category.category_name.toLowerCase()}-category.jpg" alt="Card image cap">
+									<div class="card-body">
+									  <p class="card-text">${capitalizeFirstLetter(category.category_name)}</p>
+									</div>
+								  </div>`;
+				}
+				
+				function showCategoryAndStatus(){
 				$.ajax({
 					url: "/MyRestaurant/items.do",
 					contentType: "application/json",
@@ -327,55 +370,7 @@ $(document)
 
 					}
 				});
-
-				function showItems() {
-					$('.single-category').hide();
-
-					var category = $(this).data('category-id');
-					var required = [];
-					items.forEach(element => {
-						if (element.category_id == category) {
-							required.push(element);
-						}
-					})
-					console.log(required);
-
-					var dom = `<div class="col-lg-6 col-md-6">`;
-					required.forEach(element => {
-						dom += createItemCard(element);
-					})
-						dom += `</div><div class="col-lg-6 col-md-12"></div>`;
-					$('#menuView').html(dom);
-					$('#menuView').show();
-				}
-
-				function createItemCard(item) {
-					return `<div class="card"  style="max-width: 20rem;">
-							<img class="card-img-top" src="./resources/images/item.jpg" alt="Card image cap">
-							<div class="card-body">
-							  <p class="card-text">${capitalizeFirstLetter(item.name)}</p>
-							  <button id="${item.item_id}" class="btn btn-success add-item">Add</button>
-							</div>
-						  </div>`;
-				}
-
-				function capitalizeFirstLetter(string) {
-					return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-				}
-
-				function createCategoryCard(category) {
-					return `<div class="card single-category" id ='category-${category.category_id}' data-category-id='${category.category_id}' style="max-width: 20rem;">
-									<img class="card-img-top" src="./resources/images/${category.category_name.toLowerCase()}-category.jpg" alt="Card image cap">
-									<div class="card-body">
-									  <p class="card-text">${capitalizeFirstLetter(category.category_name)}</p>
-									</div>
-								  </div>`;
-				}
-
-
-
-			})
-			
+			}
 			$('#menuView').on('click','.add-item',function(){
 				var itemId = $(this).attr("id");
 				$(this).attr("disabled",true);
@@ -385,12 +380,13 @@ $(document)
 						console.log(element.name);
 						
 						$('#cartTable').append(`<tr><td>${element.name}</td>
-												<td id="${element.item_id}_currentCount">1 <i id="${element.item_id}_IncBtn" class="material-icons incrementQuan">add_circle_outline</i>
+												<td><span id="${element.item_id}_currentCount">1</span> <i id="${element.item_id}_IncBtn" class="material-icons incrementQuan">add_circle_outline</i>
 													<i id="${element.item_id}_DecBtn" class="material-icons decrementQuan">remove_circle_outline</i>
 												</td>
-												<td id="{element.item_id}_price">${element.price}</td>
-												<td id="{element.item_id}_netPrice">${element.price}</td>
+												<td id="${element.item_id}_price">${element.price}</td>
+												<td id="${element.item_id}_netPrice">${element.price}</td>
 												</tr>`);
+						calculateTotal();
 					}
 				})
 			})
@@ -478,61 +474,78 @@ $(document)
 			})
 
 			$("#cartTable").on("click",".incrementQuan",function(){
-			//$('.incrementQuan').on('click', function () {
-				console.log("increment clicked");
+				
 				var incrementId = $(this).attr('id');
 				if (incrementId.indexOf('_IncBtn') != -1) {
-					console.log("Contains button");
+					
 					var itemIDArray = incrementId
 						.split('_IncBtn');
 					var itemID = itemIDArray[0];
-					var currentCountitemID = "#" + itemID +
+					var priceId = "#" + itemID + "_price";
+					var netPriceId = "#" + itemID + "_netPrice";
+					var currentCountitemID = "#" + itemID + 
 						"_currentCount";
-					//var currentCountitemIDArray = currentCountitemID.split(' ');
-					//currentCountitemID = currentCountitemIDArray[0];
 					var nowCountString = $(currentCountitemID)
 						.text();
-					console.log("nowCountString-->"+nowCountString);
+					
 					var nowCount = parseInt(nowCountString);
 					var newCount = nowCount + 1;
-
-					$(currentCountitemID).html(newCount+`<i id="${element.item_id}_IncBtn" class="material-icons incrementQuan">add_circle_outline</i>
-													<i id="${element.item_id}_DecBtn" class="material-icons decrementQuan">remove_circle_outline</i>`);
-					console.log("current-->" + nowCountString +
-						"after-->" + newCount);
+					$(currentCountitemID).text(newCount);
+					
+					//Calculate net Price
+					var price = parseInt($(priceId).text());
+					var netPrice = newCount * price;
+					$(netPriceId).html(netPrice);
+					calculateTotal();
 				}
 
 			})
 
 			$("#cartTable").on("click",".decrementQuan",function(){
-			//$('.decrementQuan').on('click', function () {
-				console.log("decrement clicked");
+			
 				var decrementId = $(this).attr('id');
 				if (decrementId.indexOf('_DecBtn') != -1) {
 					console.log("Contains button");
 					var itemIDArray = decrementId
 						.split('_DecBtn');
 					var itemID = itemIDArray[0];
+					var priceId = "#" + itemID + "_price";
+					var netPriceId = "#" + itemID + "_netPrice";
 					var currentCountitemID = "#" + itemID +
 						"_currentCount";
 					var nowCountString = $(currentCountitemID)
 						.text();
 					var nowCount = parseInt(nowCountString);
 					var newCount = nowCount - 1;
-					if (newCount == 0) {
-						/*var plusMinusSpanID = "#" + itemID +
-							"_PlusMinusSpan";
-						var addItemBtnID = "#" + itemID +
-							"_AddBtn";
-						$(plusMinusSpanID).hide();
-						$(addItemBtnID).show();*/
+					if (newCount == -1) {
 						newCount = 0;
 						$(currentCountitemID).html(newCount);
 					} else
 						$(currentCountitemID).html(newCount);
 
-					console.log("current-->" + nowCountString +
-						"after-->" + newCount);
+					//Calculate net Price
+					var price = parseInt($(priceId).text());
+					var netPrice = newCount * price;
+					$(netPriceId).html(netPrice);
+					calculateTotal();
 				}
 			})
+			$('#menuView').on("click","#showCategory",function(){
+				$('#menuView').html("");
+				showCategoryAndStatus();
+			})
+			function calculateTotal(){
+				var total = 0;
+				var $tblrows = $("#cartTable tbody tr");
+				$tblrows.each(function (index) {
+				    var eachPrice = $(this).find('td:last-child').text();
+				    console.log("eachPrice-->"+eachPrice);
+				    var nowPrice = parseInt(eachPrice);
+				    total +=  nowPrice;
+				    
+				});
+				//var lastColumn = $("#cartTable").find('td:last-child').text();
+				console.log("TOTAL ==> "+total);
+				$('#totalPrice').text(total);
+			}
 		});
