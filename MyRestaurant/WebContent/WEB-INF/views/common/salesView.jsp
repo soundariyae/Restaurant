@@ -34,12 +34,13 @@
 					<div id="menuView" style="display: none;">
 
 					</div></div>
+					
 					<div id="cart" class="col-lg-6 col-md-6" style="display: none;">
 					<div class="card">
 				        <div class="card-header card-header-text card-header-warning">
 				          <div class="card-text">
 				            <h4 class="card-title">Your Cart</h4>
-				           
+				           <p id="tableNo" class="card-category"></p>
 				          </div>
 				        </div>
 				        <div class="card-body table-responsive">
@@ -59,9 +60,50 @@
 				            <td class="td-total">Total</td><td id="totalPrice" class="td-price"></td>
 				            </tfoot>
 				          </table>
+				          <button id="placeOrderBtn" class="btn btn-success">Place Order</button>
+				        
+				        <div id="payments" style="display:none;">
+				        <span class="badge badge-pill badge-danger">Payments</span>
+				        <div class="form-check">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="exampleRadios" value="card" checked=""> Credit/Debit Card
+                    <span class="circle">
+                      <span class="check"></span>
+                    </span>
+                  </label>
+                </div>
+                
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="exampleRadios" value="cash"> Cash
+                    <span class="circle">
+                      <span class="check"></span>
+                    </span>
+                  </label>
+                </div>
+                
+                
+                
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="exampleRadios" value="noCash"> No Cash
+                    <span class="circle">
+                      <span class="check"></span>
+                    </span>
+                  </label>
+                </div>
+                <button id="submitOrder" class="btn btn-success">Submit</button>
+				        </div>
+				        
+				        
+				        
 				        </div>
       </div>
-      </div></div>
+      </div>
+      
+     
+      
+      </div>
 				</div>
 				<div class="tab-pane" id="messages">
 					<table class="table">

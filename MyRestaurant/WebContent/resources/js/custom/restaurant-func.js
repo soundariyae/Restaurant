@@ -264,6 +264,7 @@ $(document)
 				$('#tablesViewDiv').hide();
 				$(menuView).show();
 				$('#cart').show();
+				$('#tableNo').html("Table No :"+tableId);
 				console.log("before call");
 
 				showCategoryAndStatus();
@@ -374,12 +375,12 @@ $(document)
 			$('#menuView').on('click','.add-item',function(){
 				var itemId = $(this).attr("id");
 				$(this).attr("disabled",true);
-				console.log("Add Item =>"+itemId)
+				//console.log("Add Item =>"+itemId)
 				items.forEach(element => {
 					if (element.item_id == itemId) {
-						console.log(element.name);
+						//console.log(element.name);
 						
-						$('#cartTable').append(`<tr><td>${element.name}</td>
+						$('#cartTable').append(`<tr id="${element.item_id}"><td id="${element.item_id}_name">${element.name}</td>
 												<td><span id="${element.item_id}_currentCount">1</span> <i id="${element.item_id}_IncBtn" class="material-icons incrementQuan">add_circle_outline</i>
 													<i id="${element.item_id}_DecBtn" class="material-icons decrementQuan">remove_circle_outline</i>
 												</td>
@@ -505,7 +506,7 @@ $(document)
 			
 				var decrementId = $(this).attr('id');
 				if (decrementId.indexOf('_DecBtn') != -1) {
-					console.log("Contains button");
+					//console.log("Contains button");
 					var itemIDArray = decrementId
 						.split('_DecBtn');
 					var itemID = itemIDArray[0];
@@ -539,13 +540,13 @@ $(document)
 				var $tblrows = $("#cartTable tbody tr");
 				$tblrows.each(function (index) {
 				    var eachPrice = $(this).find('td:last-child').text();
-				    console.log("eachPrice-->"+eachPrice);
+				    //console.log("eachPrice-->"+eachPrice);
 				    var nowPrice = parseInt(eachPrice);
 				    total +=  nowPrice;
 				    
 				});
 				//var lastColumn = $("#cartTable").find('td:last-child').text();
-				console.log("TOTAL ==> "+total);
+				//console.log("TOTAL ==> "+total);
 				$('#totalPrice').text(total);
 			}
 			$('#menuView').on("keyup","#search-criteria", function() {
@@ -556,4 +557,55 @@ $(document)
 			        $(this).closest('.search-card')[ s.indexOf(g) !== -1 ? 'show' : 'hide' ]();
 			    });
 			});
+			
+			$('#placeOrderBtn').on('click',function(){
+				$('#payments').show();
+			})
+			$('#submitOrder').on('click',function(){
+				var tableIdStr = $('#tableNo').text();
+				var tableNo = parseInt(tableIdStr);
+				var OrderBean = new Object();
+				OrderBean.tableId = tableNo;
+				
+				
+				
+				var data = [];
+				var itemList = [];
+				$('#cartTable tbody').find('tr').each(function (rowIndex, r) {
+					console.log("row id ==>"+r.id);
+					var itemId= r.id;
+					var itemNameId = "#"+itemId+"_name";
+					var itemQuanId = "#"+itemId+"_currentCount";
+					var itemPriceId = "#"+itemId+"_price";
+					var OrderMgmtBean = new Object();
+					OrderMgmtBean.itemId = r.id;
+					OrderMgmtBean.itemName =  $(itemNameId).text();
+					OrderMgmtBean.itemQuantity = parseInt($(itemQuanId).text());
+					OrderMgmtBean.itemPrice = parseInt($(itemPriceId).text());
+					itemList.push(OrderMgmtBean);
+			       /* $(this).find('td').each(function (colIndex, c) {
+			        	console.log(c.id+"---"+c.textContent);
+			            cols.push(c.textContent);
+			        });*/
+			       // data.push(cols);
+			    });
+				OrderBean.orderMgmtBeanList = itemList;
+				OrderBean.totalAmount = parseInt($('#totalPrice').text());
+				console.log("Bean Length-->"+OrderBean.orderMgmtBeanList.length);
+				$.ajax({
+					url: "/MyRestaurant/placeOrder.do",
+					contentType: "application/json",
+					type: "POST",
+					data: JSON.stringify(OrderBean),
+					success: function (data) {
+
+						console.log("save success");
+						// TODO
+						// Expand category to show its items
+
+					}
+
+				})
+				
+			})
 		});

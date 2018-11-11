@@ -1,5 +1,8 @@
 package com.acc.dao.impl;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.acc.bean.ItemsBean;
+import com.acc.bean.OrderBean;
 import com.acc.bean.OrderMgmtBean;
 import com.acc.bean.TablesBean;
 import com.acc.dao.TableDetailsDao;
@@ -222,5 +226,125 @@ public class TableDetailsDaoImpl implements TableDetailsDao {
 		session.close();
 		return resultList;
 	}
+
+	@Override
+	public boolean placeOrder(OrderBean orderBean) {
+		StringBuilder queryBuffer = new StringBuilder();
+		int customerId = 1;
+		int tax=0;
+		int discount = 0;
+		Date nowDate = new Date();
+		int lastOrderId = getOrderId();
+		int orderId = lastOrderId +1;
+		queryBuffer.append("insert into orders(order_id,customer_id,table_id,cost,tax,discount,created_time)");
+		queryBuffer.append(" values(:orderId,:customerId,:tableId,:cost,:tax,:discount,:timestamp)");
+		Session session = sessionFactory.openSession();
+
+		Transaction tx = session.beginTransaction();
+
+		Query qr = session.createSQLQuery(queryBuffer.toString())
+				.setParameter("orderId", orderId)
+				.setParameter("customerId", customerId)
+				.setParameter("tableId", orderBean.getTableId())
+				.setParameter("cost", orderBean.getTotalAmount())
+				.setParameter("tax", tax)
+				.setParameter("discount", discount)
+				.setParameter("timestamp", nowDate);
+
+		int rowInserted = qr.executeUpdate();
+		tx.commit();
+		session.close();
+		if (rowInserted > 0) {
+			if(insertInOrderItemTable(orderBean,orderId)) {
+				if(insertIntoBilling(orderBean,orderId)) {
+					return true;
+				}
+			}
+			
+		}
+		return false;
+		
+	}
+	
+  private boolean insertInOrderItemTable(OrderBean orderBean,int orderId) {
+	  
+		
+		List<OrderMgmtBean> OrderMgmtBeanList = new ArrayList<OrderMgmtBean>();
+		OrderMgmtBeanList = orderBean.getOrderMgmtBeanList();
+		int count=0;
+		for(OrderMgmtBean orderMgmtBean:OrderMgmtBeanList) {
+			StringBuilder queryBuffer = new StringBuilder();
+			queryBuffer.append("insert into order_item(order_id,item_id");
+			queryBuffer.append(" values(:orderId,:itemId");
+			Session session = sessionFactory.openSession();
+
+			Transaction tx = session.beginTransaction();
+
+			Query qr = session.createSQLQuery(queryBuffer.toString())
+					.setParameter("orderId",orderId )
+					.setParameter("itemId", orderMgmtBean.getItemId());
+					
+
+			int rowInserted = qr.executeUpdate();
+			tx.commit();
+			count++;
+			session.close();
+		}
+		
+		if(count>0) {
+			return true;
+		}
+		return false;
+	
+	  
+  }
+  
+  @SuppressWarnings( "unchecked" )
+  private int getOrderId() {
+	  StringBuilder queryBuffer = new StringBuilder();
+		queryBuffer.append("SELECT order_id as \"orderId\"");
+		queryBuffer.append(" FROM orders");
+		queryBuffer.append(" order by order_id desc");
+		
+
+		System.out.println(queryBuffer.toString());
+		Session session = sessionFactory.openSession();
+		Query qr = session.createSQLQuery(queryBuffer.toString()).addScalar("orderId", StandardBasicTypes.INTEGER)
+				.setResultTransformer(new AliasToBeanResultTransformer(OrderBean.class));;
+				
+		
+		List<OrderBean> resultList = qr.list();
+		int lastOrderId = resultList.get(0).getOrderId();
+		logger.debug("lastOrderId---->"+lastOrderId);
+	  return lastOrderId;
+  }
+  
+  private boolean insertIntoBilling(OrderBean orderBean,int orderId) {
+	  	
+			StringBuilder queryBuffer = new StringBuilder();
+			queryBuffer.append("insert into billing(order_id,total_amount");
+			queryBuffer.append(" values(:orderId,:totalAmt");
+			Session session = sessionFactory.openSession();
+
+			Transaction tx = session.beginTransaction();
+
+			Query qr = session.createSQLQuery(queryBuffer.toString())
+					.setParameter("orderId",orderId )
+					.setParameter("totalAmt", orderBean.getTotalAmount());
+					
+
+			int rowInserted = qr.executeUpdate();
+			tx.commit();
+			
+			session.close();
+		
+		if(rowInserted>0) {
+			return true;
+		}
+		
+		return false;
+	
+	  
+}
 
 }

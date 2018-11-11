@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.acc.bean.ItemsBean;
+import com.acc.bean.OrderBean;
 import com.acc.bean.OrderMgmtBean;
 import com.acc.bean.TablesBean;
 import com.acc.delegate.AdminViewDelegate;
@@ -59,6 +60,13 @@ public class AdminViewController {
 	@RequestMapping(value = "/items.do", method = RequestMethod.GET)
 	public @ResponseBody List<ItemsBean> getItems(HttpServletRequest request, HttpServletResponse response) {
 		return adminViewDelegate.getItems();
+	}
+	
+	@RequestMapping(value = "/placeOrder.do", method = RequestMethod.POST)
+	public @ResponseBody boolean placeOrder(@RequestBody OrderBean orderBean,
+			HttpServletRequest request, HttpServletResponse response) {
+		//logger.debug("Into the controller saveNewCategoryDetails-->" + orderMgmtBean.getCategoryName());
+		return adminViewDelegate.placeOrder(orderBean);
 	}
 
 }

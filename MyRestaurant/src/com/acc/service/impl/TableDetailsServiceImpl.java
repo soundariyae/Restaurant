@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.acc.bean.ItemsBean;
+import com.acc.bean.OrderBean;
 import com.acc.bean.OrderMgmtBean;
 import com.acc.bean.TablesBean;
 
@@ -64,6 +65,12 @@ public class TableDetailsServiceImpl implements TableDetailsService{
 	@Override
 	public List<ItemsBean> getItems() {
 		return tableDetailsDao.getItems();
+	}
+
+	@Override
+	public boolean placeOrder(OrderBean orderBean) {
+		
+		return tableDetailsDao.placeOrder(orderBean);
 	}
 	
 	

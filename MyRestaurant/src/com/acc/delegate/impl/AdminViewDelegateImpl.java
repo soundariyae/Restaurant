@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.acc.bean.ItemsBean;
+import com.acc.bean.OrderBean;
 import com.acc.bean.OrderMgmtBean;
 import com.acc.bean.TablesBean;
 
@@ -48,5 +49,13 @@ public class AdminViewDelegateImpl implements  AdminViewDelegate{
 	@Override
 	public List<ItemsBean> getItems() {
 		return tableDetailsService.getItems();
+	}
+
+
+
+	@Override
+	public boolean placeOrder(OrderBean orderBean) {
+		// TODO Auto-generated method stub
+		return tableDetailsService.placeOrder(orderBean);
 	}
 }
