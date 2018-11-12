@@ -562,7 +562,7 @@ $(document)
 				$('#payments').show();
 			})
 			$('#submitOrder').on('click',function(){
-				var tableIdStr = $('#tableNo').text();
+				var tableIdStr = 1;//$('#tableNo').text();
 				var tableNo = parseInt(tableIdStr);
 				var OrderBean = new Object();
 				OrderBean.tableId = tableNo;

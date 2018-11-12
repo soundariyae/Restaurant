@@ -2,6 +2,8 @@ package com.acc.bean;
 
 import java.util.List;
 
+import org.json.JSONObject;
+
 public class OrderBean {
 	
 	int tableId;
@@ -34,6 +36,10 @@ public class OrderBean {
 		this.orderId = orderId;
 	}
 	
+	@Override
+	public String toString() {
+		return this.toString();
+}
 	
 
 }

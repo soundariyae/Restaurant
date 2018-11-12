@@ -203,24 +203,20 @@ public class TableDetailsDaoImpl implements TableDetailsDao {
 	@Override
 	public List<ItemsBean> getItems() {
 		StringBuilder queryBuffer = new StringBuilder();
-		queryBuffer.append("select a.item_id,a.description,a.price,a.available_quantity,a.pic_filename,a.tax,a.status,a.name , b.category_name,b.category_id from item a, category b where a.category_id =b.category_id");
-		
+		queryBuffer.append(
+				"select a.item_id,a.description,a.price,a.available_quantity,a.pic_filename,a.tax,a.status,a.name , b.category_name,b.category_id from item a, category b where a.category_id =b.category_id");
 
 		System.out.println(queryBuffer.toString());
 		Session session = sessionFactory.openSession();
-		Query qr = session.createSQLQuery(queryBuffer.toString())
-				.addScalar("item_id", StandardBasicTypes.INTEGER)
-				.addScalar("description", StandardBasicTypes.STRING)
-				.addScalar("price", StandardBasicTypes.FLOAT)
+		Query qr = session.createSQLQuery(queryBuffer.toString()).addScalar("item_id", StandardBasicTypes.INTEGER)
+				.addScalar("description", StandardBasicTypes.STRING).addScalar("price", StandardBasicTypes.FLOAT)
 				.addScalar("available_quantity", StandardBasicTypes.INTEGER)
-				.addScalar("pic_filename", StandardBasicTypes.STRING)
-				.addScalar("tax", StandardBasicTypes.FLOAT)
-				.addScalar("status", StandardBasicTypes.BOOLEAN)
-				.addScalar("name", StandardBasicTypes.STRING)
+				.addScalar("pic_filename", StandardBasicTypes.STRING).addScalar("tax", StandardBasicTypes.FLOAT)
+				.addScalar("status", StandardBasicTypes.BOOLEAN).addScalar("name", StandardBasicTypes.STRING)
 				.addScalar("category_name", StandardBasicTypes.STRING)
-				.addScalar("category_id",StandardBasicTypes.INTEGER)
+				.addScalar("category_id", StandardBasicTypes.INTEGER)
 				.setResultTransformer(new AliasToBeanResultTransformer(ItemsBean.class));
-		
+
 		List<ItemsBean> resultList = qr.list();
 		logger.debug("size of the record --> " + resultList.size());
 		session.close();
@@ -231,48 +227,45 @@ public class TableDetailsDaoImpl implements TableDetailsDao {
 	public boolean placeOrder(OrderBean orderBean) {
 		StringBuilder queryBuffer = new StringBuilder();
 		int customerId = 1;
-		int tax=0;
+		int tax = 0;
 		int discount = 0;
 		Date nowDate = new Date();
-		int lastOrderId = getOrderId();
-		int orderId = lastOrderId +1;
-		queryBuffer.append("insert into orders(order_id,customer_id,table_id,cost,tax,discount,created_time)");
-		queryBuffer.append(" values(:orderId,:customerId,:tableId,:cost,:tax,:discount,:timestamp)");
+		/*
+		 * int lastOrderId = getOrderId(); int orderId = lastOrderId +1;
+		 */
+		queryBuffer.append("insert into orders(customer_id,table_id,cost,tax,discount,created_time)");
+		queryBuffer.append(" values(:customerId,:tableId,:cost,:tax,:discount,:timestamp)");
 		Session session = sessionFactory.openSession();
 
 		Transaction tx = session.beginTransaction();
 
-		Query qr = session.createSQLQuery(queryBuffer.toString())
-				.setParameter("orderId", orderId)
-				.setParameter("customerId", customerId)
-				.setParameter("tableId", orderBean.getTableId())
-				.setParameter("cost", orderBean.getTotalAmount())
-				.setParameter("tax", tax)
-				.setParameter("discount", discount)
-				.setParameter("timestamp", nowDate);
+		System.out.println(orderBean.getTableId());
+		System.out.println(orderBean.getTotalAmount());
+		Query qr = session.createSQLQuery(queryBuffer.toString()).setParameter("customerId", customerId)
+				.setParameter("tableId", orderBean.getTableId()).setParameter("cost", orderBean.getTotalAmount())
+				.setParameter("tax", tax).setParameter("discount", discount).setParameter("timestamp", nowDate);
 
 		int rowInserted = qr.executeUpdate();
 		tx.commit();
 		session.close();
 		if (rowInserted > 0) {
-			if(insertInOrderItemTable(orderBean,orderId)) {
-				if(insertIntoBilling(orderBean,orderId)) {
-					return true;
-				}
-			}
-			
+			/*
+			 * if (insertInOrderItemTable(orderBean, orderId)) { if
+			 * (insertIntoBilling(orderBean, orderId)) { return true; } }
+			 */
+			return true;
+
 		}
 		return false;
-		
+
 	}
-	
-  private boolean insertInOrderItemTable(OrderBean orderBean,int orderId) {
-	  
-		
+
+	private boolean insertInOrderItemTable(OrderBean orderBean, int orderId) {
+
 		List<OrderMgmtBean> OrderMgmtBeanList = new ArrayList<OrderMgmtBean>();
 		OrderMgmtBeanList = orderBean.getOrderMgmtBeanList();
-		int count=0;
-		for(OrderMgmtBean orderMgmtBean:OrderMgmtBeanList) {
+		int count = 0;
+		for (OrderMgmtBean orderMgmtBean : OrderMgmtBeanList) {
 			StringBuilder queryBuffer = new StringBuilder();
 			queryBuffer.append("insert into order_item(order_id,item_id");
 			queryBuffer.append(" values(:orderId,:itemId");
@@ -280,71 +273,64 @@ public class TableDetailsDaoImpl implements TableDetailsDao {
 
 			Transaction tx = session.beginTransaction();
 
-			Query qr = session.createSQLQuery(queryBuffer.toString())
-					.setParameter("orderId",orderId )
+			Query qr = session.createSQLQuery(queryBuffer.toString()).setParameter("orderId", orderId)
 					.setParameter("itemId", orderMgmtBean.getItemId());
-					
 
 			int rowInserted = qr.executeUpdate();
 			tx.commit();
 			count++;
 			session.close();
 		}
-		
-		if(count>0) {
+
+		if (count > 0) {
 			return true;
 		}
 		return false;
-	
-	  
-  }
-  
-  @SuppressWarnings( "unchecked" )
-  private int getOrderId() {
-	  StringBuilder queryBuffer = new StringBuilder();
+
+	}
+
+	@SuppressWarnings("unchecked")
+	private int getOrderId() {
+		StringBuilder queryBuffer = new StringBuilder();
 		queryBuffer.append("SELECT order_id as \"orderId\"");
 		queryBuffer.append(" FROM orders");
 		queryBuffer.append(" order by order_id desc");
-		
 
 		System.out.println(queryBuffer.toString());
 		Session session = sessionFactory.openSession();
 		Query qr = session.createSQLQuery(queryBuffer.toString()).addScalar("orderId", StandardBasicTypes.INTEGER)
-				.setResultTransformer(new AliasToBeanResultTransformer(OrderBean.class));;
-				
-		
+				.setResultTransformer(new AliasToBeanResultTransformer(OrderBean.class));
+		;
+
 		List<OrderBean> resultList = qr.list();
 		int lastOrderId = resultList.get(0).getOrderId();
-		logger.debug("lastOrderId---->"+lastOrderId);
-	  return lastOrderId;
-  }
-  
-  private boolean insertIntoBilling(OrderBean orderBean,int orderId) {
-	  	
-			StringBuilder queryBuffer = new StringBuilder();
-			queryBuffer.append("insert into billing(order_id,total_amount");
-			queryBuffer.append(" values(:orderId,:totalAmt");
-			Session session = sessionFactory.openSession();
+		logger.debug("lastOrderId---->" + lastOrderId);
+		return lastOrderId;
+	}
 
-			Transaction tx = session.beginTransaction();
+	private boolean insertIntoBilling(OrderBean orderBean, int orderId) {
 
-			Query qr = session.createSQLQuery(queryBuffer.toString())
-					.setParameter("orderId",orderId )
-					.setParameter("totalAmt", orderBean.getTotalAmount());
-					
+		StringBuilder queryBuffer = new StringBuilder();
+		queryBuffer.append("insert into billing(order_id,total_amount");
+		queryBuffer.append(" values(:orderId,:totalAmt");
+		Session session = sessionFactory.openSession();
 
-			int rowInserted = qr.executeUpdate();
-			tx.commit();
-			
-			session.close();
-		
-		if(rowInserted>0) {
+		Transaction tx = session.beginTransaction();
+
+		Query qr = session.createSQLQuery(queryBuffer.toString()).setParameter("orderId", orderId)
+				.setParameter("totalAmt", orderBean.getTotalAmount());
+
+		int rowInserted = qr.executeUpdate();
+		tx.commit();
+
+		session.close();
+
+		if (rowInserted > 0) {
 			return true;
 		}
-		
+
 		return false;
-	
-	  
-}
+
+	}
 
 }
