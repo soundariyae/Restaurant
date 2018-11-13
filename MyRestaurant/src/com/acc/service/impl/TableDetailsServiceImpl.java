@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.acc.bean.ItemsBean;
 import com.acc.bean.OrderBean;
 import com.acc.bean.OrderMgmtBean;
+import com.acc.bean.PaymentBean;
 import com.acc.bean.TablesBean;
 
 import com.acc.dao.TableDetailsDao;
@@ -68,9 +69,21 @@ public class TableDetailsServiceImpl implements TableDetailsService{
 	}
 
 	@Override
-	public boolean placeOrder(OrderBean orderBean) {
+	public int placeOrder(OrderBean orderBean) {
 		
 		return tableDetailsDao.placeOrder(orderBean);
+	}
+
+	@Override
+	public List<PaymentBean> getPaymentMethods() {
+		// TODO Auto-generated method stub
+		return tableDetailsDao.getPaymentMethods();
+	}
+
+	@Override
+	public boolean updatePaymentType(OrderBean orderBean) {
+		// TODO Auto-generated method stub
+		return tableDetailsDao.updatePaymentType(orderBean);
 	}
 	
 	

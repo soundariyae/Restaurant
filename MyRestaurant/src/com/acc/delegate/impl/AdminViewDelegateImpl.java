@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import com.acc.bean.ItemsBean;
 import com.acc.bean.OrderBean;
 import com.acc.bean.OrderMgmtBean;
+import com.acc.bean.PaymentBean;
 import com.acc.bean.TablesBean;
 
 import com.acc.delegate.AdminViewDelegate;
@@ -54,8 +55,20 @@ public class AdminViewDelegateImpl implements  AdminViewDelegate{
 
 
 	@Override
-	public boolean placeOrder(OrderBean orderBean) {
+	public int placeOrder(OrderBean orderBean) {
 		// TODO Auto-generated method stub
 		return tableDetailsService.placeOrder(orderBean);
 	}
+
+
+
+	@Override
+	public boolean updatePaymentType(OrderBean orderBean) {
+		// TODO Auto-generated method stub
+		return tableDetailsService.updatePaymentType(orderBean);
+	}
+
+
+
+	
 }

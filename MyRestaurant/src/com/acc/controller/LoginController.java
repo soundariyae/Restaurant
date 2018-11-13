@@ -87,6 +87,7 @@ public class LoginController {
 		HttpSession session = request.getSession(false);
 		List<String> roles = (List<String>) session.getAttribute("roles");
 		System.out.println(roles.toString());
+		mav.addObject("paymentMethodList", loginDelegate.getPaymentMethods());
 		mav.setViewName("common/salesView.jsp");
 
 		return mav;
@@ -147,5 +148,6 @@ public class LoginController {
 		// int categoryIdInt = Integer.parseInt(categoryId);
 		return loginDelegate.getItems(0);
 	}
+	
 
 }

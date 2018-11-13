@@ -558,12 +558,46 @@ $(document)
 			    });
 			});
 			
+			$('#submitOrder').on('click',function(){
+				//$('#payments').show();
+				var selValue = $('input[name=paymentTypeRadio]:checked').val();
+				console.log("paymentTypeRadio-->"+selValue);
+				var OrderBean = new Object();
+				OrderBean.paymentTypeId = parseInt(selValue);
+				
+				var orderId = parseInt($('#createdOrderId').text());
+				OrderBean.orderId = orderId;
+				$.ajax({
+					url: "/MyRestaurant/updatePaymentType.do",
+					contentType: "application/json",
+					type: "POST",
+					data: JSON.stringify(OrderBean),
+					success: function (data) {
+
+						console.log("save success");
+						// TODO
+						// Expand category to show its items
+						$('#createdOrderId').append(" Order Closed");
+
+					}
+
+				})
+				
+			})
+			//submitOrder
 			$('#placeOrderBtn').on('click',function(){
 				$('#payments').show();
-			})
-			$('#submitOrder').on('click',function(){
 				var tableIdStr = $('#tableNo').text();
-				var tableNo = parseInt(tableIdStr);
+				console.log("tableIdStr-->"+tableIdStr);
+				var tableNo;
+				if (tableIdStr.indexOf(':') != -1) {
+					
+					var tableIdArray = tableIdStr.split(':');
+					var tableId = tableIdArray[1];
+					tableNo = parseInt(tableId.trim());
+					console.log("tableNo--------------"+tableNo);
+				}
+				
 				var OrderBean = new Object();
 				OrderBean.tableId = tableNo;
 				
@@ -602,6 +636,7 @@ $(document)
 						console.log("save success");
 						// TODO
 						// Expand category to show its items
+						$('#createdOrderId').text(data);
 
 					}
 

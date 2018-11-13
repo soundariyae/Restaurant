@@ -3,6 +3,7 @@ package com.acc.delegate.impl;
 import java.util.List;
 
 import com.acc.bean.OrderMgmtBean;
+import com.acc.bean.PaymentBean;
 import com.acc.bean.UserBean;
 import com.acc.delegate.LoginDelegate;
 import com.acc.service.LoginService;
@@ -46,5 +47,9 @@ public class LoginDelegateImpl implements LoginDelegate {
 		return loginService.getRoles(employee_id);
 	}
 	
-	
+	@Override
+	public List<PaymentBean> getPaymentMethods() {
+		
+		return tableDetailsService.getPaymentMethods();
+	}
 }

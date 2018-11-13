@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.acc.bean.ItemsBean;
 import com.acc.bean.OrderBean;
 import com.acc.bean.OrderMgmtBean;
+import com.acc.bean.PaymentBean;
 import com.acc.bean.TablesBean;
 import com.acc.dao.TableDetailsDao;
 
@@ -228,7 +229,7 @@ public class TableDetailsDaoImpl implements TableDetailsDao {
 	}
 
 	@Override
-	public boolean placeOrder(OrderBean orderBean) {
+	public int placeOrder(OrderBean orderBean) {
 		StringBuilder queryBuffer = new StringBuilder();
 		int customerId = 1;
 		int tax=0;
@@ -236,8 +237,10 @@ public class TableDetailsDaoImpl implements TableDetailsDao {
 		Date nowDate = new Date();
 		int lastOrderId = getOrderId();
 		int orderId = lastOrderId +1;
-		queryBuffer.append("insert into orders(order_id,customer_id,table_id,cost,tax,discount,created_time)");
-		queryBuffer.append(" values(:orderId,:customerId,:tableId,:cost,:tax,:discount,:timestamp)");
+		//String orderIdStr = orderId.toString();
+		logger.debug("orderId-------->"+orderId);
+		queryBuffer.append("insert into orders(order_id,customer_id,table_id,cost,tax,discount,created_time,order_status_type_id)");
+		queryBuffer.append(" values(:orderId,:customerId,:tableId,:cost,:tax,:discount,:timestamp,1)");
 		Session session = sessionFactory.openSession();
 
 		Transaction tx = session.beginTransaction();
@@ -257,12 +260,12 @@ public class TableDetailsDaoImpl implements TableDetailsDao {
 		if (rowInserted > 0) {
 			if(insertInOrderItemTable(orderBean,orderId)) {
 				if(insertIntoBilling(orderBean,orderId)) {
-					return true;
+					return orderId;
 				}
 			}
 			
 		}
-		return false;
+		return 0;
 		
 	}
 	
@@ -274,8 +277,8 @@ public class TableDetailsDaoImpl implements TableDetailsDao {
 		int count=0;
 		for(OrderMgmtBean orderMgmtBean:OrderMgmtBeanList) {
 			StringBuilder queryBuffer = new StringBuilder();
-			queryBuffer.append("insert into order_item(order_id,item_id");
-			queryBuffer.append(" values(:orderId,:itemId");
+			queryBuffer.append("insert into order_item(order_id,item_id)");
+			queryBuffer.append(" values(:orderId,:itemId)");
 			Session session = sessionFactory.openSession();
 
 			Transaction tx = session.beginTransaction();
@@ -322,8 +325,8 @@ public class TableDetailsDaoImpl implements TableDetailsDao {
   private boolean insertIntoBilling(OrderBean orderBean,int orderId) {
 	  	
 			StringBuilder queryBuffer = new StringBuilder();
-			queryBuffer.append("insert into billing(order_id,total_amount");
-			queryBuffer.append(" values(:orderId,:totalAmt");
+			queryBuffer.append("insert into billing(order_id,total_amount)");
+			queryBuffer.append(" values(:orderId,:totalAmt)");
 			Session session = sessionFactory.openSession();
 
 			Transaction tx = session.beginTransaction();
@@ -345,6 +348,81 @@ public class TableDetailsDaoImpl implements TableDetailsDao {
 		return false;
 	
 	  
+}
+  @Override
+  @SuppressWarnings("unchecked")
+public List<PaymentBean> getPaymentMethods(){
+	  
+	  StringBuilder queryBuffer = new StringBuilder();
+		queryBuffer.append("SELECT bill_type_id as \"billId\",");
+		queryBuffer.append(" bill_type as \"billType\",");
+		queryBuffer.append(" description as \"description\"");
+		queryBuffer.append(" FROM bill_types");
+		
+		Session session = sessionFactory.openSession();
+		Query qr = session.createSQLQuery(queryBuffer.toString())
+				.addScalar("billId", StandardBasicTypes.INTEGER)
+				.addScalar("billType", StandardBasicTypes.STRING)
+				.addScalar("description", StandardBasicTypes.STRING)
+				.setResultTransformer(new AliasToBeanResultTransformer(PaymentBean.class));
+		List<PaymentBean> resultList = qr.list();
+	  return resultList;
+  }
+
+@Override
+public boolean updatePaymentType(OrderBean orderBean) {
+	StringBuilder queryBuffer = new StringBuilder();
+	queryBuffer.append("update billing set bill_type_id = :billType ");
+	queryBuffer.append(" where order_id = :orderId");
+	Session session = sessionFactory.openSession();
+
+	Transaction tx = session.beginTransaction();
+
+	Query qr = session.createSQLQuery(queryBuffer.toString())
+			.setParameter("billType",orderBean.getPaymentTypeId() )
+			.setParameter("orderId", orderBean.getOrderId());
+			
+
+	int rowInserted = qr.executeUpdate();
+	tx.commit();
+	
+	session.close();
+
+if(rowInserted>0) {
+	return updateOrderStatus(orderBean,4);
+	
+}
+
+return false;
+
+	
+}
+
+private boolean updateOrderStatus(OrderBean orderBean,int orderStatusId) {
+	StringBuilder queryBuffer = new StringBuilder();
+	queryBuffer.append("update orders set order_status_type_id = :orderStatusId ");
+	queryBuffer.append(" where order_id = :orderId");
+	Session session = sessionFactory.openSession();
+
+	Transaction tx = session.beginTransaction();
+
+	Query qr = session.createSQLQuery(queryBuffer.toString())
+			.setParameter("orderStatusId", orderStatusId)
+			.setParameter("orderId", orderBean.getOrderId());
+			
+
+	int rowInserted = qr.executeUpdate();
+	tx.commit();
+	
+	session.close();
+
+if(rowInserted>0) {
+	
+	return true;
+}
+
+return false;
+	
 }
 
 }

@@ -5,6 +5,7 @@ import com.acc.bean.UserBean;
 import java.util.List;
 
 import com.acc.bean.OrderMgmtBean;
+import com.acc.bean.PaymentBean;
 
 
 public interface LoginDelegate {
@@ -13,6 +14,7 @@ public interface LoginDelegate {
 	List<OrderMgmtBean> getCategory();
 	public List<OrderMgmtBean> getItems(int categoryId);
 	List<String> getRoles(int employee_id);
+	public List<PaymentBean> getPaymentMethods();
 	
 	
 

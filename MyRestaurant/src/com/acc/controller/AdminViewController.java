@@ -63,10 +63,17 @@ public class AdminViewController {
 	}
 	
 	@RequestMapping(value = "/placeOrder.do", method = RequestMethod.POST)
-	public @ResponseBody boolean placeOrder(@RequestBody OrderBean orderBean,
+	public @ResponseBody int placeOrder(@RequestBody OrderBean orderBean,
 			HttpServletRequest request, HttpServletResponse response) {
 		//logger.debug("Into the controller saveNewCategoryDetails-->" + orderMgmtBean.getCategoryName());
 		return adminViewDelegate.placeOrder(orderBean);
+	}
+	
+	@RequestMapping(value = "/updatePaymentType.do", method = RequestMethod.POST)
+	public @ResponseBody boolean updatePaymentType(@RequestBody OrderBean orderBean,
+			HttpServletRequest request, HttpServletResponse response) {
+		//logger.debug("Into the controller saveNewCategoryDetails-->" + orderMgmtBean.getCategoryName());
+		return adminViewDelegate.updatePaymentType(orderBean);
 	}
 
 }

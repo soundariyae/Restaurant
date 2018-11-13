@@ -8,6 +8,7 @@ public class OrderBean {
 	List<OrderMgmtBean> orderMgmtBeanList;
 	int totalAmount;
 	int orderId;
+	int paymentTypeId;
 	
 	public int getTableId() {
 		return tableId;
@@ -33,6 +34,13 @@ public class OrderBean {
 	public void setOrderId(int orderId) {
 		this.orderId = orderId;
 	}
+	public int getPaymentTypeId() {
+		return paymentTypeId;
+	}
+	public void setPaymentTypeId(int paymentTypeId) {
+		this.paymentTypeId = paymentTypeId;
+	}
+	
 	
 	
 

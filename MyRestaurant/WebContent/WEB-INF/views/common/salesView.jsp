@@ -1,3 +1,4 @@
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <div class="col-md-12 col-12 mr-auto ml-auto">
 	<div class="card">
 		<div class="card-header card-header-tabs card-header-rose">
@@ -64,34 +65,39 @@
 				        
 				        <div id="payments" style="display:none;">
 				        <span class="badge badge-pill badge-danger">Payments</span>
+				        <p id="createdOrderId" class="text-warning">
+                          
+                        </p>
+				        <c:forEach items="${paymentMethodList}" var="paymentMethodList">
 				        <div class="form-check">
                   <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="exampleRadios" value="card" checked=""> Credit/Debit Card
+                    <input class="form-check-input" type="radio" name="paymentTypeRadio" value="${paymentMethodList.billId}"> ${paymentMethodList.billType}
                     <span class="circle">
                       <span class="check"></span>
                     </span>
                   </label>
                 </div>
-                
-                <div class="form-check">
+                </c:forEach>
+               
+                <!-- <div class="form-check">
                   <label class="form-check-label">
                     <input class="form-check-input" type="radio" name="exampleRadios" value="cash"> Cash
                     <span class="circle">
                       <span class="check"></span>
                     </span>
                   </label>
-                </div>
+                </div> -->
                 
                 
                 
-                <div class="form-check">
+                <!-- <div class="form-check">
                   <label class="form-check-label">
                     <input class="form-check-input" type="radio" name="exampleRadios" value="noCash"> No Cash
                     <span class="circle">
                       <span class="check"></span>
                     </span>
                   </label>
-                </div>
+                </div> -->
                 <button id="submitOrder" class="btn btn-success">Submit</button>
 				        </div>
 				        
