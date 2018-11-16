@@ -19,4 +19,6 @@ public interface TableDetailsDao {
 	int placeOrder (OrderBean orderBean);
 	public List<PaymentBean> getPaymentMethods();
 	boolean updatePaymentType(OrderBean orderBean);
+	public List<OrderBean> getOrderWithStatus(int statusId);
+	public List<OrderMgmtBean> getItemsForOrderId(int orderId);
 }

@@ -16,6 +16,7 @@ public interface AdminViewDelegate {
 	List<ItemsBean> getItems();
 	int placeOrder (OrderBean orderBean);
 	boolean updatePaymentType(OrderBean orderBean);
+	public List<OrderMgmtBean> getItemsForOrderId(int orderId);
 	
 
 }

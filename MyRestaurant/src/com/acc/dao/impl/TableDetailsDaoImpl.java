@@ -425,4 +425,59 @@ return false;
 	
 }
 
+
+@SuppressWarnings("unchecked")
+public List<OrderBean> getOrderWithStatus(int statusId){
+	 StringBuilder queryBuffer = new StringBuilder();
+		queryBuffer.append("SELECT a.order_id as \"orderId\",");
+		queryBuffer.append(" a.table_id as \"tableId\",");
+		queryBuffer.append(" a.cost as \"totalAmount\",");
+		queryBuffer.append(" a.order_status_type_id as \"orderStatusTypeId\",");
+		queryBuffer.append(" c.description as \"orderStatusType\"");
+		//queryBuffer.append(" b.bill_type_id as \"paymentTypeId\"");
+		queryBuffer.append(" FROM orders a, orders_status_type c");
+		if(statusId==0){
+			logger.debug(".........0");
+		queryBuffer.append(" WHERE order_status_type_id != 4 and a.order_status_type_id=c.orders_status_type_id");
+		}
+		else{
+			logger.debug(".........1");
+			queryBuffer.append(" WHERE order_status_type_id = 4 and a.order_status_type_id=c.orders_status_type_id");
+		}
+		logger.debug("Query------->"+		queryBuffer.toString());
+		Session session = sessionFactory.openSession();
+		Query qr = session.createSQLQuery(queryBuffer.toString())
+				.addScalar("orderId", StandardBasicTypes.INTEGER)
+				.addScalar("tableId", StandardBasicTypes.INTEGER)
+				.addScalar("totalAmount", StandardBasicTypes.INTEGER)
+				.addScalar("orderStatusType", StandardBasicTypes.STRING)
+				.addScalar("orderStatusTypeId", StandardBasicTypes.INTEGER)
+				.setResultTransformer(new AliasToBeanResultTransformer(OrderBean.class));
+		List<OrderBean> resultList = qr.list();
+		logger.debug("Size ==>"+qr.list().size());
+	  return resultList;
+}
+
+@SuppressWarnings("unchecked")
+public List<OrderMgmtBean> getItemsForOrderId(int orderId){
+	 StringBuilder queryBuffer = new StringBuilder();
+		queryBuffer.append("SELECT a.item_id as \"itemId\",");
+		queryBuffer.append(" a.name as \"itemName\"");
+		
+		queryBuffer.append(" FROM item a, order_item b");
+		
+		queryBuffer.append(" WHERE b.order_id=:orderId and a.item_id = b.item_id");
+		
+		logger.debug("Query------->"+		queryBuffer.toString());
+		Session session = sessionFactory.openSession();
+		Query qr = session.createSQLQuery(queryBuffer.toString())
+				.addScalar("itemId", StandardBasicTypes.INTEGER)
+				.addScalar("itemName", StandardBasicTypes.STRING)
+				.setParameter("orderId", orderId)
+				.setResultTransformer(new AliasToBeanResultTransformer(OrderMgmtBean.class));
+		List<OrderMgmtBean> resultList = qr.list();
+		logger.debug("Size ==>"+qr.list().size());
+	  return resultList;
+}
+
 }

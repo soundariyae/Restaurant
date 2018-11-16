@@ -569,7 +569,7 @@ $(document)
 				OrderBean.orderId = orderId;
 				$.ajax({
 					url: "/MyRestaurant/updatePaymentType.do",
-					contentType: "application/json",
+					contentType: "application/json", 
 					type: "POST",
 					data: JSON.stringify(OrderBean),
 					success: function (data) {
@@ -643,4 +643,116 @@ $(document)
 				})
 				
 			})
+			
+			//Modal
+			$('.detailsBtnClass').on('click',function(){
+				var elementId = $(this).attr('id');
+				console.log("elementId-->"+elementId);
+				
+				
+				$('#myOrderModal').modal('show');
+				var itemIdArray = elementId.split('_');
+				$('#orderIdMod').val(itemIdArray[0]);
+				$('#tableIdMod').val(itemIdArray[1]);
+				$('#totalAmtMod').val(itemIdArray[2]);
+				$('#statusMod').val(itemIdArray[3]);
+				
+				var ordIdStr = $('#orderIdMod').val();
+				var ordId = parseInt(ordIdStr.trim());
+				$('#itemsListDiv').html("Items Loading....");
+				
+				$.ajax({
+					url: "/MyRestaurant/getItemsForOrderId.do",
+					contentType: "application/json",
+					type: "POST",
+					data:JSON.stringify(ordId),
+					
+					success: function (data) {
+						
+						console.log("save success");
+						var domDiv = `<h4>Items</h4><table class="table"><tbody>`;
+						$.each(data,function(key,value){
+							domDiv += `<tr>
+                            <td>`+value.itemName+`</td>
+                          </tr>`;
+									})
+							domDiv += `</tbody></table>`;		
+						$('#itemsListDiv').html(domDiv);
+						
+
+					}
+
+				})
+				
+				
+				
+				
+				
+				
+			})
+			//Payment modal
+			$('#paymentMethod').on('click',function(){
+				
+				var orderId = $('#orderIdMod').val();
+				$('#myPaymentModal').modal('show');
+				$('#orderIdDiv').html(orderId);
+				$('#paymentsRadioDiv').html("Loading Payment method...");
+				
+				$.ajax({
+					url: "/MyRestaurant/getPaymentMethods.do",
+					contentType: "application/json",
+					type: "POST",
+					success: function (data) {
+						
+						console.log("save success");
+						var domRadio = "";
+						$.each(data,function(key,value){
+							domRadio += `<div class="form-check">
+                      		               <label class="form-check-label">
+											<input class="form-check-input" type="radio" name="paymentTypeRadioModal" value="`+value.billId+`"> `+value.billType+`
+											<span class="circle">
+												<span class="check"></span>
+											</span>
+											</label>
+											</div>`;
+									})
+									
+						$('#paymentsRadioDiv').html(domRadio);
+						
+
+					}
+
+				})
+			})
+			
+			$('#submitOrderForPaymentChange').on('click',function(){
+				var orderId = $('#orderIdDiv').text();
+				//$('#payments').show();
+				var selValue = $('input[name=paymentTypeRadioModal]:checked').val();
+				console.log("paymentTypeRadio-->"+selValue);
+				var OrderBean = new Object();
+				OrderBean.paymentTypeId = parseInt(selValue);
+				
+				//var orderId = parseInt($('#createdOrderId').text());
+				OrderBean.orderId = orderId;
+				$.ajax({
+					url: "/MyRestaurant/updatePaymentType.do",
+					contentType: "application/json", 
+					type: "POST",
+					data: JSON.stringify(OrderBean),
+					success: function (data) {
+
+						console.log("save success");
+						// TODO
+						// Expand category to show its items
+						
+						$('#paymentsRadioDiv').html(" Order Closed for ID "+orderId);
+						$('#submitOrderForPaymentChange').hide();
+
+					}
+
+				})
+			})
+					
+		
 		});

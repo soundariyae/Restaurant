@@ -70,5 +70,13 @@ public class AdminViewDelegateImpl implements  AdminViewDelegate{
 
 
 
+	@Override
+	public List<OrderMgmtBean> getItemsForOrderId(int orderId) {
+		// TODO Auto-generated method stub
+		return tableDetailsService.getItemsForOrderId(orderId);
+	}
+
+
+
 	
 }

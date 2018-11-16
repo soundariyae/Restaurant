@@ -85,6 +85,18 @@ public class TableDetailsServiceImpl implements TableDetailsService{
 		// TODO Auto-generated method stub
 		return tableDetailsDao.updatePaymentType(orderBean);
 	}
+
+	@Override
+	public List<OrderBean> getOrderWithStatus(int statusId) {
+		// TODO Auto-generated method stub
+		return tableDetailsDao.getOrderWithStatus(statusId);
+	}
+
+	@Override
+	public List<OrderMgmtBean> getItemsForOrderId(int orderId) {
+		
+		return tableDetailsDao.getItemsForOrderId(orderId);
+	}
 	
 	
 

@@ -74,6 +74,17 @@ public class AdminViewController {
 			HttpServletRequest request, HttpServletResponse response) {
 		//logger.debug("Into the controller saveNewCategoryDetails-->" + orderMgmtBean.getCategoryName());
 		return adminViewDelegate.updatePaymentType(orderBean);
+		
+		
+	}
+	
+	@RequestMapping(value = "/getItemsForOrderId.do", method = RequestMethod.POST)
+	public @ResponseBody List<OrderMgmtBean> getItemsForOrderId(@RequestBody int orderId,
+			HttpServletRequest request, HttpServletResponse response) {
+		//logger.debug("Into the controller saveNewCategoryDetails-->" + orderMgmtBean.getCategoryName());
+		return adminViewDelegate.getItemsForOrderId(orderId);
+		
+		
 	}
 
 }

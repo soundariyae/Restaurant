@@ -9,6 +9,8 @@ public class OrderBean {
 	int totalAmount;
 	int orderId;
 	int paymentTypeId;
+	int orderStatusTypeId;
+	String orderStatusType;
 	
 	public int getTableId() {
 		return tableId;
@@ -39,6 +41,18 @@ public class OrderBean {
 	}
 	public void setPaymentTypeId(int paymentTypeId) {
 		this.paymentTypeId = paymentTypeId;
+	}
+	public int getOrderStatusTypeId() {
+		return orderStatusTypeId;
+	}
+	public void setOrderStatusTypeId(int orderStatusTypeId) {
+		this.orderStatusTypeId = orderStatusTypeId;
+	}
+	public String getOrderStatusType() {
+		return orderStatusType;
+	}
+	public void setOrderStatusType(String orderStatusType) {
+		this.orderStatusType = orderStatusType;
 	}
 	
 	

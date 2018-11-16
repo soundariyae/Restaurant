@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.acc.bean.OrderMgmtBean;
+import com.acc.bean.PaymentBean;
 import com.acc.bean.UserBean;
 
 import com.acc.delegate.LoginDelegate;
@@ -87,6 +88,9 @@ public class LoginController {
 		HttpSession session = request.getSession(false);
 		List<String> roles = (List<String>) session.getAttribute("roles");
 		System.out.println(roles.toString());
+		mav.addObject("parkedOrdersList",loginDelegate.getOrderWithStatus(0));
+		mav.addObject("closedOrdersList",loginDelegate.getOrderWithStatus(1));
+		
 		mav.addObject("paymentMethodList", loginDelegate.getPaymentMethods());
 		mav.setViewName("common/salesView.jsp");
 
@@ -149,5 +153,9 @@ public class LoginController {
 		return loginDelegate.getItems(0);
 	}
 	
-
+	@RequestMapping(value = "/getPaymentMethods.do", method = RequestMethod.POST)
+	public @ResponseBody List<PaymentBean> getPaymentMethods(HttpServletRequest request, HttpServletResponse response) {
+		logger.debug("Into the controller getCategory-->");
+		return loginDelegate.getPaymentMethods();
+	}
 }
